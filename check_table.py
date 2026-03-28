@@ -7,7 +7,7 @@ try:
     cur.execute("DESCRIBE books")
     columns = cur.fetchall()
     
-    print("Cấu trúc bảng books:")
+    print("Cấu trúc bảng books :")
     for col in columns:
         print(col)
         
