@@ -1,0 +1,7 @@
+config.ini
+__pycache__/
+*.py[cod]
+.Python
+venv/
+.venv/
+.env

@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ScreenStats</class>
+ <widget class="QWidget" name="ScreenStats">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1000</width>
+    <height>720</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_root">
+   <property name="spacing">
+    <number>20</number>
+   </property>
+   <property name="leftMargin">
+    <number>24</number>
+   </property>
+   <property name="topMargin">
+    <number>24</number>
+   </property>
+   <property name="rightMargin">
+    <number>24</number>
+   </property>
+   <property name="bottomMargin">
+    <number>24</number>
+   </property>
+   <item>
+    <widget class="QLabel" name="label_page_title">
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Tổng quan</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_cards">
+     <property name="spacing">
+      <number>16</number>
+     </property>
+     <item>
+      <widget class="QFrame" name="frame_stat_books">
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QFrame { background: #ffffff; border: 1px solid #e2e6ea; border-radius: 12px; }</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_sb">
+        <property name="leftMargin">
+         <number>20</number>
+        </property>
+        <property name="topMargin">
+         <number>16</number>
+        </property>
+        <property name="rightMargin">
+         <number>20</number>
+        </property>
+        <property name="bottomMargin">
+         <number>16</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_stat_books_caption">
+          <property name="styleSheet">
+           <string notr="true">color: #5f6368; font-size: 13px;</string>
+          </property>
+          <property name="text">
+           <string>Sách</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_stat_books_value">
+          <property name="font">
+           <font>
+            <pointsize>26</pointsize>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>0</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="frame_stat_categories">
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QFrame { background: #ffffff; border: 1px solid #e2e6ea; border-radius: 12px; }</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_sc">
+        <property name="leftMargin">
+         <number>20</number>
+        </property>
+        <property name="topMargin">
+         <number>16</number>
+        </property>
+        <property name="rightMargin">
+         <number>20</number>
+        </property>
+        <property name="bottomMargin">
+         <number>16</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_stat_categories_caption">
+          <property name="styleSheet">
+           <string notr="true">color: #5f6368; font-size: 13px;</string>
+          </property>
+          <property name="text">
+           <string>Thể loại</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_stat_categories_value">
+          <property name="font">
+           <font>
+            <pointsize>26</pointsize>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>0</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="frame_stat_authors">
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QFrame { background: #ffffff; border: 1px solid #e2e6ea; border-radius: 12px; }</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_sa">
+        <property name="leftMargin">
+         <number>20</number>
+        </property>
+        <property name="topMargin">
+         <number>16</number>
+        </property>
+        <property name="rightMargin">
+         <number>20</number>
+        </property>
+        <property name="bottomMargin">
+         <number>16</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_stat_authors_caption">
+          <property name="styleSheet">
+           <string notr="true">color: #5f6368; font-size: 13px;</string>
+          </property>
+          <property name="text">
+           <string>Tác giả</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_stat_authors_value">
+          <property name="font">
+           <font>
+            <pointsize>26</pointsize>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>0</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="frame_stat_publishers">
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QFrame { background: #ffffff; border: 1px solid #e2e6ea; border-radius: 12px; }</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_sp">
+        <property name="leftMargin">
+         <number>20</number>
+        </property>
+        <property name="topMargin">
+         <number>16</number>
+        </property>
+        <property name="rightMargin">
+         <number>20</number>
+        </property>
+        <property name="bottomMargin">
+         <number>16</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_stat_publishers_caption">
+          <property name="styleSheet">
+           <string notr="true">color: #5f6368; font-size: 13px;</string>
+          </property>
+          <property name="text">
+           <string>Nhà xuất bản</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_stat_publishers_value">
+          <property name="font">
+           <font>
+            <pointsize>26</pointsize>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>0</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_table_title">
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Danh sách sách</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTableWidget" name="table_stats_books">
+     <property name="columnCount">
+      <number>6</number>
+     </property>
+     <property name="rowCount">
+      <number>0</number>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
+     </property>
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+     <column>
+      <property name="text">
+       <string>Mã</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Tên sách</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Năm</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>SL</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Thể loại</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Tác giả</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
