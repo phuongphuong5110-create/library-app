@@ -8,6 +8,7 @@ from controller.books_controller import BooksController
 from controller.categories_controller import CategoriesController
 from controller.publishers_controller import PublishersController
 from controller.stats_controller import StatsController
+from controller.accounts_controller import AccountsController
 
 _VIEW_DIR = Path(__file__).resolve().parent.parent / "view"
 
@@ -17,7 +18,7 @@ _SCREEN_FILES = (
     "screen_categories.ui",
     "screen_authors.ui",
     "screen_publishers.ui",
-    "screen_settings.ui",
+    "screen_accounts.ui",
 )
 
 
@@ -31,6 +32,7 @@ class MainWindowController(QMainWindow):
         self._categories_ctrl = None
         self._authors_ctrl = None
         self._publishers_ctrl = None
+        self._accounts_ctrl = None
 
         self._load_screens()
 
@@ -39,6 +41,7 @@ class MainWindowController(QMainWindow):
         self.btn_nav_categories.clicked.connect(lambda: self._go(2))
         self.btn_nav_authors.clicked.connect(lambda: self._go(3))
         self.btn_nav_publishers.clicked.connect(lambda: self._go(4))
+        self.btn_nav_accounts.clicked.connect(lambda: self._go(5))
 
     def _load_screens(self):
         stack = self.stacked_screens
@@ -52,6 +55,7 @@ class MainWindowController(QMainWindow):
         self._categories_ctrl = CategoriesController(self, stack.widget(2))
         self._authors_ctrl = AuthorsController(self, stack.widget(3))
         self._publishers_ctrl = PublishersController(self, stack.widget(4))
+        self._accounts_ctrl = AccountsController(self, stack.widget(5))
 
     def _go(self, index):
         self.stacked_screens.setCurrentIndex(index)
@@ -66,3 +70,6 @@ class MainWindowController(QMainWindow):
             self._authors_ctrl.refresh_table()
         if index == 4 and self._publishers_ctrl:
             self._publishers_ctrl.refresh_table()
+        if index == 5 and self._accounts_ctrl:
+            self._accounts_ctrl.refresh_table()
+        
