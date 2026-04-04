@@ -6,28 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1020</width>
-    <height>760</height>
+    <width>1200</width>
+    <height>800</height>
    </rect>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_root">
-   <property name="spacing">
-    <number>16</number>
-   </property>
-   <property name="leftMargin">
-    <number>24</number>
-   </property>
-   <property name="topMargin">
-    <number>24</number>
-   </property>
-   <property name="rightMargin">
-    <number>24</number>
-   </property>
-   <property name="bottomMargin">
-    <number>24</number>
-   </property>
+  <layout class="QVBoxLayout">
    <item>
-    <widget class="QLabel" name="label_page_title">
+    <widget class="QLabel" name="label">
      <property name="font">
       <font>
        <pointsize>20</pointsize>
@@ -35,52 +20,52 @@
       </font>
      </property>
      <property name="text">
-      <string>Quản lý sách</string>
+      <string>Quản lý người đọc</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QTabWidget" name="tabWidget_books">
+    <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
-     <widget class="QWidget" name="tab_book_list">
+     <widget class="QWidget" name="widget">
       <attribute name="title">
        <string>Danh sách</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_list">
+      <layout class="QVBoxLayout">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_list_tools">
+        <layout class="QHBoxLayout">
          <item>
-          <widget class="QPushButton" name="btn_books_refresh">
+          <widget class="QPushButton" name="btn_reader_add">
            <property name="text">
-            <string>Làm mới</string>
+            <string>Thêm</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="btn_books_load_edit">
+          <widget class="QPushButton" name="btn_reader_edit">
            <property name="text">
-            <string>Mở sửa</string>
+            <string>Sửa</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="btn_books_delete">
+          <widget class="QPushButton" name="btn_reader_delete">
            <property name="text">
             <string>Xóa</string>
            </property>
           </widget>
          </item>
          <item>
-          <spacer name="horizontalSpacer_list">
+          <spacer>
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>40</width>
-             <height>20</height>
+             <width>0</width>
+             <height>0</height>
             </size>
            </property>
           </spacer>
@@ -88,19 +73,19 @@
         </layout>
        </item>
        <item>
-        <widget class="QTableWidget" name="table_books">
+        <widget class="QTableWidget" name="tableWidget">
          <property name="columnCount">
-          <number>8</number>
+          <number>4</number>
          </property>
-         <property name="rowCount">
-          <number>0</number>
-         </property>
-         <property name="selectionBehavior">
-          <enum>QAbstractItemView::SelectRows</enum>
-         </property>
-         <property name="alternatingRowColors">
+         <attribute name="horizontalHeaderMinimumSectionSize">
+          <number>80</number>
+         </attribute>
+         <attribute name="horizontalHeaderDefaultSectionSize">
+          <number>150</number>
+         </attribute>
+         <attribute name="horizontalHeaderStretchLastSection">
           <bool>true</bool>
-         </property>
+         </attribute>
          <column>
           <property name="text">
            <string>ID</string>
@@ -108,307 +93,163 @@
          </column>
          <column>
           <property name="text">
-           <string>Tên</string>
+           <string>Họ tên</string>
           </property>
          </column>
          <column>
           <property name="text">
-           <string>Mã</string>
+           <string>Email</string>
           </property>
          </column>
          <column>
           <property name="text">
-           <string>SL</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Năm</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Thể loại</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Tác giả</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>NXB</string>
+           <string>Vai trò</string>
           </property>
          </column>
         </widget>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab_book_add">
+     <widget class="QWidget" name="tab">
       <attribute name="title">
-       <string>Thêm sách</string>
+       <string>Thêm / Sửa</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_add">
-       <item>
-        <widget class="QGroupBox" name="group_add_book">
-         <property name="title">
-          <string>Thông tin sách mới</string>
-         </property>
-         <layout class="QFormLayout" name="formLayout_add">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_add_title">
-            <property name="text">
-             <string>Tên sách</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="edit_book_title"/>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_add_code">
-            <property name="text">
-             <string>Mã sách</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLineEdit" name="edit_book_code"/>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_add_qty">
-            <property name="text">
-             <string>Số lượng</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLineEdit" name="edit_book_quantity"/>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="label_add_year">
-            <property name="text">
-             <string>Năm XB</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QLineEdit" name="edit_book_year"/>
-          </item>
-          <item row="4" column="0">
-           <widget class="QLabel" name="label_add_cat">
-            <property name="text">
-             <string>Thể loại</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="QComboBox" name="combo_book_category"/>
-          </item>
-          <item row="5" column="0">
-           <widget class="QLabel" name="label_add_author">
-            <property name="text">
-             <string>Tác giả</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="1">
-           <widget class="QComboBox" name="combo_book_author"/>
-          </item>
-          <item row="6" column="0">
-           <widget class="QLabel" name="label_add_pub">
-            <property name="text">
-             <string>Nhà xuất bản</string>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="1">
-           <widget class="QComboBox" name="combo_book_publisher"/>
-          </item>
-          <item row="7" column="0">
-           <widget class="QLabel" name="label_add_desc">
-            <property name="text">
-             <string>Mô tả</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="1">
-           <widget class="QPlainTextEdit" name="edit_book_description">
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>100</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="btn_book_save">
+      <widget class="QWidget" name="layoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>-40</x>
+         <y>370</y>
+         <width>1151</width>
+         <height>231</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="_2">
+        <item>
+         <widget class="QPushButton" name="btn_reader_save">
+          <property name="text">
+           <string>Lưu</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btn_reader_delete_2">
+          <property name="text">
+           <string>Hủy</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QGroupBox" name="groupBox">
+       <property name="geometry">
+        <rect>
+         <x>-20</x>
+         <y>10</y>
+         <width>1281</width>
+         <height>351</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Thông tin người dùng</string>
+       </property>
+       <widget class="QLineEdit" name="edit_reader_name">
+        <property name="geometry">
+         <rect>
+          <x>520</x>
+          <y>80</y>
+          <width>231</width>
+          <height>31</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_2">
+        <property name="geometry">
+         <rect>
+          <x>410</x>
+          <y>80</y>
+          <width>111</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>18</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Họ tên</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="edit_email_name">
+        <property name="geometry">
+         <rect>
+          <x>520</x>
+          <y>150</y>
+          <width>231</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_3">
+        <property name="geometry">
+         <rect>
+          <x>410</x>
+          <y>150</y>
+          <width>111</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>18</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Email:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_4">
+        <property name="geometry">
+         <rect>
+          <x>410</x>
+          <y>220</y>
+          <width>71</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>18</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Vai trò:</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="comboBox_role">
+        <property name="geometry">
+         <rect>
+          <x>520</x>
+          <y>220</y>
+          <width>151</width>
+          <height>32</height>
+         </rect>
+        </property>
+        <item>
          <property name="text">
-          <string>Lưu sách mới</string>
+          <string>Admin</string>
          </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="verticalSpacer_add">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
+        </item>
+        <item>
+         <property name="text">
+          <string>Người dùng</string>
          </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="tab_book_edit">
-      <attribute name="title">
-       <string>Sửa / Xóa</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_edit">
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_search">
-         <item>
-          <widget class="QLabel" name="label_search_title">
-           <property name="text">
-            <string>Tìm theo tên sách</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="edit_search_title"/>
-         </item>
-         <item>
-          <widget class="QPushButton" name="btn_search_book">
-           <property name="text">
-            <string>Tìm</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="group_edit_book">
-         <property name="title">
-          <string>Chỉnh sửa</string>
-         </property>
-         <layout class="QFormLayout" name="formLayout_edit">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_edit_title">
-            <property name="text">
-             <string>Tên sách</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="edit_edit_title"/>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_edit_code">
-            <property name="text">
-             <string>Mã sách</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLineEdit" name="edit_edit_code"/>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_edit_qty">
-            <property name="text">
-             <string>Số lượng</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLineEdit" name="edit_edit_quantity"/>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="label_edit_year">
-            <property name="text">
-             <string>Năm XB</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QLineEdit" name="edit_edit_year"/>
-          </item>
-          <item row="4" column="0">
-           <widget class="QLabel" name="label_edit_cat">
-            <property name="text">
-             <string>Thể loại</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="QComboBox" name="combo_edit_category"/>
-          </item>
-          <item row="5" column="0">
-           <widget class="QLabel" name="label_edit_author">
-            <property name="text">
-             <string>Tác giả</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="1">
-           <widget class="QComboBox" name="combo_edit_author"/>
-          </item>
-          <item row="6" column="0">
-           <widget class="QLabel" name="label_edit_pub">
-            <property name="text">
-             <string>Nhà xuất bản</string>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="1">
-           <widget class="QComboBox" name="combo_edit_publisher"/>
-          </item>
-          <item row="7" column="0">
-           <widget class="QLabel" name="label_edit_desc">
-            <property name="text">
-             <string>Mô tả</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="1">
-           <widget class="QPlainTextEdit" name="edit_edit_description">
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>100</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_edit_actions">
-         <item>
-          <widget class="QPushButton" name="btn_edit_save">
-           <property name="text">
-            <string>Lưu thay đổi</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="btn_edit_delete">
-           <property name="text">
-            <string>Xóa sách này</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
+        </item>
+       </widget>
+      </widget>
      </widget>
     </widget>
    </item>
