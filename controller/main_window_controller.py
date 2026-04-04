@@ -58,6 +58,7 @@ class MainWindowController(QMainWindow):
         self._accounts_ctrl = AccountsController(self, stack.widget(5))
 
     def _go(self, index):
+        # Hiển thị screen tương ứng
         self.stacked_screens.setCurrentIndex(index)
         if index == 0 and self._stats_ctrl:
             self._stats_ctrl.refresh_all()

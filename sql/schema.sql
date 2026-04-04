@@ -32,6 +32,13 @@ CREATE TABLE IF NOT EXISTS books (
     UNIQUE KEY uq_books_code (code)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS accounts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    role VARCHAR(50) NOT NULL DEFAULT 'Người dùng'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 INSERT IGNORE INTO categories (id, category_name) VALUES
  (1, 'Văn học'),
  (2, 'Khoa học'),
@@ -46,3 +53,8 @@ INSERT IGNORE INTO publishers (id, name) VALUES
  (1, 'Nhà xuất bản Trẻ'),
  (2, 'Nhà xuất bản Giáo dục'),
  (3, 'Nhà xuất bản Văn học');
+
+INSERT IGNORE INTO accounts (id, name, email, role) VALUES
+ (1, 'Admin User', 'admin@library.com', 'Admin'),
+ (2, 'Nguyễn Văn A', 'nguyenvana@email.com', 'Người dùng'),
+ (3, 'Trần Thị B', 'tranthib@email.com', 'Người dùng');
