@@ -9,6 +9,7 @@ from controller.categories_controller import CategoriesController
 from controller.publishers_controller import PublishersController
 from controller.stats_controller import StatsController
 from controller.accounts_controller import AccountsController
+from controller.loans_controller import LoansController
 
 _VIEW_DIR = Path(__file__).resolve().parent.parent / "view"
 
@@ -19,6 +20,7 @@ _SCREEN_FILES = (
     "screen_authors.ui",
     "screen_publishers.ui",
     "screen_accounts.ui",
+    "screen_loans.ui",
 )
 
 
@@ -33,6 +35,7 @@ class MainWindowController(QMainWindow):
         self._authors_ctrl = None
         self._publishers_ctrl = None
         self._accounts_ctrl = None
+        self._loans_ctrl = None
 
         self._load_screens()
 
@@ -42,6 +45,7 @@ class MainWindowController(QMainWindow):
         self.btn_nav_authors.clicked.connect(lambda: self._go(3))
         self.btn_nav_publishers.clicked.connect(lambda: self._go(4))
         self.btn_nav_accounts.clicked.connect(lambda: self._go(5))
+        self.btn_nav_loans.clicked.connect(lambda: print("CLICK LOANS") or self._go(6))
 
     def _load_screens(self):
         stack = self.stacked_screens
@@ -56,6 +60,7 @@ class MainWindowController(QMainWindow):
         self._authors_ctrl = AuthorsController(self, stack.widget(3))
         self._publishers_ctrl = PublishersController(self, stack.widget(4))
         self._accounts_ctrl = AccountsController(self, stack.widget(5))
+        self._loans_ctrl = LoansController(self, stack.widget(6))
 
     def _go(self, index):
         # Hiển thị screen tương ứng
@@ -73,4 +78,7 @@ class MainWindowController(QMainWindow):
             self._publishers_ctrl.refresh_table()
         if index == 5 and self._accounts_ctrl:
             self._accounts_ctrl.refresh_table()
+        if index == 6 and self._loans_ctrl:
+            self._loans_ctrl.refresh_borrow_table()
+            self._loans_ctrl.refresh_return_table()
         

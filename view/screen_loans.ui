@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ScreenBooks</class>
+ <widget class="QWidget" name="ScreenBooks">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1487</width>
+    <height>884</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_root">
+   <property name="spacing">
+    <number>16</number>
+   </property>
+   <property name="leftMargin">
+    <number>24</number>
+   </property>
+   <property name="topMargin">
+    <number>24</number>
+   </property>
+   <property name="rightMargin">
+    <number>24</number>
+   </property>
+   <property name="bottomMargin">
+    <number>24</number>
+   </property>
+   <item>
+    <widget class="QLabel" name="label_page_title">
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Mượn / Trả sách</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTabWidget" name="tabWidget_loans">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="tab_borrow">
+      <attribute name="title">
+       <string>Mượn sách</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_list">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_list_tools">
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Tìm kiếm sách:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="search_book"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_search_book_borrow">
+           <property name="text">
+            <string>Tìm</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_list">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="table_loans">
+         <property name="alternatingRowColors">
+          <bool>true</bool>
+         </property>
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectRows</enum>
+         </property>
+         <property name="rowCount">
+          <number>0</number>
+         </property>
+         <property name="columnCount">
+          <number>4</number>
+         </property>
+         <column>
+          <property name="text">
+           <string>ID</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Tên sách</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Mã</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Trạng thái</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_borrow_actions">
+         <item>
+          <spacer name="horizontalSpacer_borrow">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_borrow_book">
+           <property name="text">
+            <string>Mượn sách</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_return">
+      <attribute name="title">
+       <string>Trả sách</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_return">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_return_tools">
+         <item>
+          <widget class="QLabel" name="label_return">
+           <property name="text">
+            <string>Tìm kiếm sách:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="search_book_return"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_search_book_return">
+           <property name="text">
+            <string>Tìm</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_return">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="table_loans_return">
+         <property name="alternatingRowColors">
+          <bool>true</bool>
+         </property>
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectRows</enum>
+         </property>
+         <property name="rowCount">
+          <number>0</number>
+         </property>
+         <property name="columnCount">
+          <number>6</number>
+         </property>
+         <column>
+          <property name="text">
+           <string>ID</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Tên sách</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Người mượn</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Ngày mượn</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Ngày trả</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Trạng thái</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_return_actions">
+         <item>
+          <spacer name="horizontalSpacer_return_bottom">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_return_book">
+           <property name="text">
+            <string>Trả sách</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

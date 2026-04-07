@@ -139,6 +139,13 @@
         </widget>
        </item>
        <item>
+        <widget class="QPushButton" name="btn_nav_loans">
+         <property name="text">
+          <string>Mượn/Trả</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <spacer name="verticalSpacer_nav">
          <property name="orientation">
           <enum>Qt::Vertical</enum>

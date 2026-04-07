@@ -39,6 +39,21 @@ CREATE TABLE IF NOT EXISTS accounts (
     role VARCHAR(50) NOT NULL DEFAULT 'Người dùng'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS loans (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    books_id INT NOT NULL,
+    code_id INT,
+    authors_id INT,
+    account_id INT,
+    borrow_date DATE NOT NULL DEFAULT CURDATE(),
+    due_date DATE,
+    return_date DATE,
+    status VARCHAR(50) NOT NULL DEFAULT 'borrowed',
+    note TEXT,
+    CONSTRAINT fk_loans_book FOREIGN KEY (books_id) REFERENCES books(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT fk_loans_account FOREIGN KEY (account_id) REFERENCES accounts(id) ON UPDATE CASCADE ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 INSERT IGNORE INTO categories (id, category_name) VALUES
  (1, 'Văn học'),
  (2, 'Khoa học'),
@@ -53,6 +68,11 @@ INSERT IGNORE INTO publishers (id, name) VALUES
  (1, 'Nhà xuất bản Trẻ'),
  (2, 'Nhà xuất bản Giáo dục'),
  (3, 'Nhà xuất bản Văn học');
+
+INSERT IGNORE INTO books (id, title, code, quantity, year, category_id, author_id, publisher_id) VALUES
+ (1, 'Cô Gái Đến Từ Hôm Qua', 'CGDTFHQ001', 5, 2012, 1, 1, 1),
+ (2, 'Tắt Đèn', 'TDDEN001', 3, 1939, 1, 3, 3),
+ (3, 'Tìm Kiếm Trái Đất', 'TKTD001', 4, 1957, 3, 2, 2);
 
 INSERT IGNORE INTO accounts (id, name, email, role) VALUES
  (1, 'Admin User', 'admin@library.com', 'Admin'),

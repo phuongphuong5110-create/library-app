@@ -155,11 +155,11 @@ class AccountsController:
             self._main, 
             "Xác nhận xóa", 
             "Bạn có chắc chắn muốn xóa tài khoản này?",
-            QMessageBox.Yes | QMessageBox.No,
-            QMessageBox.No
+            QMessageBox.Có | QMessageBox.Không,
+            QMessageBox.Không
         )
         
-        if reply == QMessageBox.Yes:
+        if reply == QMessageBox.Có:
             try:
                 account_model.delete_by_id(account_id)
                 self.refresh_table()
