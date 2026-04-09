@@ -8,13 +8,17 @@ if str(ROOT) not in sys.path:
 from PyQt5.QtWidgets import QApplication
 
 from app_theme import APP_STYLESHEET
-from controller.main_window_controller import MainWindowController
+from controller.main_window_controller import LoginWindow
+#from controller.main_window_controller import MainWindowController
 
+# Biến global để lưu thông tin user hiện tại
+current_user = None
 
 def main():
     app = QApplication(sys.argv)
     app.setStyleSheet(APP_STYLESHEET)
-    window = MainWindowController()
+    window = LoginWindow()
+    # window = MainWindowController()
     window.show()
     sys.exit(app.exec_())
 

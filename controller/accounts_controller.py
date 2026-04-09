@@ -21,9 +21,10 @@ class AccountsController:
     TAB_ADD = 1
     TAB_EDIT = 2
 
-    def __init__(self, main_window: QMainWindow, screen):
+    def __init__(self, main_window: QMainWindow, screen, current_user):
         self._main = main_window
         self._screen = screen
+        self._current_user = current_user
         
         self._screen.btn_reader_add.clicked.connect(self._on_add)
         self._screen.btn_reader_edit.clicked.connect(self._on_edit)
@@ -151,15 +152,31 @@ class AccountsController:
             )
             return
         
+        # Kiểm tra quyền admin
+        if not self._current_user or self._current_user.get('role') != 'admin':
+            QMessageBox.warning(self._main, "Lỗi", "Chỉ admin mới có quyền xóa tài khoản!")
+            return
+        
+        # Lấy thông tin tài khoản để kiểm tra role
+        try:
+            account = account_model.find_by_id(account_id)
+            if not account:
+                self._main.statusBar().showMessage("Tài khoản không tồn tại.")
+                return
+            # Admin có thể xóa tất cả
+        except pymysql.Error as e:
+            QMessageBox.critical(self._main, "Lỗi", f"Không thể kiểm tra tài khoản: {str(e)}")
+            return
+        
         reply = QMessageBox.question(
             self._main, 
             "Xác nhận xóa", 
             "Bạn có chắc chắn muốn xóa tài khoản này?",
-            QMessageBox.Có | QMessageBox.Không,
-            QMessageBox.Không
-        )
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.No
+        ) 
         
-        if reply == QMessageBox.Có:
+        if reply == QMessageBox.Yes:
             try:
                 account_model.delete_by_id(account_id)
                 self.refresh_table()

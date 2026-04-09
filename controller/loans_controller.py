@@ -16,7 +16,6 @@ def _parse_int(text, default=0):
     except ValueError:
         return default
 
-
 class LoansController:
     TAB_LIST = 0
     TAB_ADD = 1
@@ -200,5 +199,3 @@ class LoansController:
         except Exception as e:
             QMessageBox.critical(self.main_window, "Lỗi", f"Lỗi lấy danh sách người dùng: {str(e)}")
             return None, False
-
-    

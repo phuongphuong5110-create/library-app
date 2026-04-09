@@ -32,6 +32,15 @@ CREATE TABLE IF NOT EXISTS books (
     UNIQUE KEY uq_books_code (code)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    fullname VARCHAR(100),
+    role VARCHAR(50) NOT NULL DEFAULT 'user'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS accounts (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -73,6 +82,10 @@ INSERT IGNORE INTO books (id, title, code, quantity, year, category_id, author_i
  (1, 'Cô Gái Đến Từ Hôm Qua', 'CGDTFHQ001', 5, 2012, 1, 1, 1),
  (2, 'Tắt Đèn', 'TDDEN001', 3, 1939, 1, 3, 3),
  (3, 'Tìm Kiếm Trái Đất', 'TKTD001', 4, 1957, 3, 2, 2);
+
+INSERT IGNORE INTO users (id, username, password, email, fullname, role) VALUES
+ (1, 'admin', '123456', 'admin@library.com', 'Admin User', 'admin'),
+ (2, 'user1', 'password', 'user1@email.com', 'Nguyễn Văn A', 'user');
 
 INSERT IGNORE INTO accounts (id, name, email, role) VALUES
  (1, 'Admin User', 'admin@library.com', 'Admin'),
