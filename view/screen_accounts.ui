@@ -245,7 +245,7 @@
         </item>
         <item>
          <property name="text">
-          <string>Người dùng</string>
+          <string>Người đọc</string>
          </property>
         </item>
        </widget>

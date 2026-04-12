@@ -37,15 +37,3 @@ class User:
 
         cursor.execute(query, (username, hashed_password))
         return cursor.fetchone()
-    
-    def check_staff_login(self, username, password):
-        hashed_password = self._hash_password(password)
-        cursor = self.conn.cursor()
-
-        query = """
-        SELECT * FROM users
-        WHERE username = %s AND password = %s AND role = 'staff'
-        """
-
-        cursor.execute(query, (username, password))
-        return cursor.fetchone()

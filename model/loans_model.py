@@ -92,3 +92,15 @@ def return_book(loan_id):
                 "UPDATE books SET quantity = quantity + 1 WHERE id = %s",
                 (book_id,)
             )
+            
+def save_loan(book_id, account_id, due_date):
+    with cursor() as cur:
+        # Thêm loan record
+        cur.execute(
+            """
+            INSERT INTO loans (books_id, authors_id, account_id, borrow_date, due_date, status)
+            VALUES (%s, (SELECT author_id FROM books WHERE id = %s), %s, CURDATE(), %s, 'borrowed')
+            """,
+            (book_id, book_id, account_id, due_date),
+        )
+        

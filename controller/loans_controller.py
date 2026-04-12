@@ -28,10 +28,12 @@ class LoansController:
         self._selected_book_id = None
         
         try:
-            self.screen.btn_search_book_borrow.clicked.connect(self._search_available_books)
             self.screen.btn_search_book_return.clicked.connect(self._load_borrowing_list)
-            self.screen.btn_borrow_book.clicked.connect(self.borrow_book)
             self.screen.btn_return_book.clicked.connect(self.return_book)
+            self.screen.btn_confirm_loans.clicked.connect(self.borrow_book_action)
+            self.screen.btn_cancel_loans.clicked.connect(self.form_loans)
+            self.screen.btn_addbook_loans.clicked.connect(self.add_book_to_list)
+            self.screen.search_book_borrow.textChanged.connect(self._search_available_books)
         except Exception as e:
             print(f"Lỗi kết nối button: {e}")
         
@@ -83,8 +85,7 @@ class LoansController:
         return str(status or '')
 
     def _search_available_books(self):
-        #Tìm kiếm sách theo tên
-        search_text = self.screen.search_book.text().strip()
+        search_text = self.screen.search_book_borrow.text().strip()
         if not search_text:
             self.refresh_borrow_table()
             return
@@ -127,34 +128,6 @@ class LoansController:
             t.setItem(r, 3, QTableWidgetItem(str(row["borrow_date"])))
             t.setItem(r, 4, QTableWidgetItem(str(row["due_date"] or "")))
             t.setItem(r, 5, QTableWidgetItem(self._format_loan_status(row.get("status"))))
-        
-    def borrow_book(self):
-        #Mượn sách
-        # Lấy dòng được chọn từ bảng sách
-        selected_rows = self.screen.table_loans.selectionModel().selectedRows()
-        if not selected_rows:
-            QMessageBox.warning(self.main_window, "Thông báo", "Vui lòng chọn sách để mượn!")
-            return
-        
-        row_idx = selected_rows[0].row()
-        book_id = int(self.screen.table_loans.item(row_idx, 0).text())
-        book_title = self.screen.table_loans.item(row_idx, 1).text()
-        
-        # Chọn người mượn
-        user_id, ok = self._select_account()
-        if not ok or not user_id:
-            return
-        
-        # Chọn ngày trả dự kiến 
-        due_date = (datetime.now() + timedelta(days=30)).strftime("%Y-%m-%d")
-        
-        try:
-            loans_model.borrow_book(book_id, user_id, due_date)
-            QMessageBox.information(self.main_window, "Thành công", f"Mượn '{book_title}' thành công!")
-            self.refresh_borrow_table()
-            self.refresh_return_table()
-        except Exception as e:
-            QMessageBox.critical(self.main_window, "Lỗi", f"Lỗi khi mượn sách: {str(e)}")
 
     def return_book(self):
         #Trả sách
@@ -175,27 +148,88 @@ class LoansController:
             self.refresh_return_table()
         except Exception as e:
             QMessageBox.critical(self.main_window, "Lỗi", f"Lỗi khi trả sách: {str(e)}")
-
-    def _select_account(self):
-        #Hiển thị dialog để chọn người mượn
+            
+    def borrow_book_action(self):
+        # 1. Lấy danh sách sách từ ô Sách đã chọn
+        list_widget = self.screen.list_book_borrow
+        if list_widget.count() == 0:
+            QMessageBox.warning(self.main_window, "Thông báo", "Vui lòng chọn sách và bấm 'Thêm Sách' vào danh sách mượn!")
+            return
+            
+        # 2. Kiểm tra tên người mượn và email
+        user_name = self.screen.user_borrow.text().strip()
+        user_email = self.screen.email_account.text().strip()
+        
+        if not user_name or not user_email:
+            QMessageBox.warning(self.main_window, "Thông báo", "Vui lòng nhập đầy đủ Tên người mượn và Email!")
+            return
+            
+        from model import account_model
+        acc = account_model.find_by_email(user_email)
+        if acc:
+            account_id = acc['id']
+        else:
+            try:
+                # Tạo tài khoản mới tạm thời với role là Người đọc
+                account_model.create_account(user_name, user_email, "Người đọc")
+                acc = account_model.find_by_email(user_email)
+                account_id = acc['id']
+            except Exception as e:
+                QMessageBox.critical(self.main_window, "Lỗi", f"Không thể tạo tài khoản mới: {e}")
+                return
+            
+        # 3. Lấy hạn trả
+        due_date = self.screen.return_date.date().toString("yyyy-MM-dd")
+        
+        # 4. Lưu từng sách vào Database
+        success_count = 0
         try:
-            accounts = loans_model.get_accounts()
-            account_names = [f"{acc['id']} - {acc['name']}" for acc in accounts]
+            for i in range(list_widget.count()):
+                item_text = list_widget.item(i).text()
+                book_id = int(item_text.split(" - ")[0])
+                loans_model.borrow_book(book_id, account_id, due_date)
+                success_count += 1
             
-            from PyQt5.QtWidgets import QInputDialog
-            account_text, ok = QInputDialog.getItem(
-                self.main_window, 
-                "Chọn người mượn", 
-                "Người dùng:",
-                account_names,
-                0,
-                False
-            )
-            
-            if ok and account_text:
-                account_id = int(account_text.split(" - ")[0])
-                return account_id, ok
-            return None, ok
+            QMessageBox.information(self.main_window, "Thành công", f"Đã mượn thành công {success_count} quyển sách!")
+            self.form_loans() 
+            self.screen.tabWidget_loans.setCurrentIndex(1) # Chuyển sang tab Trả sách
         except Exception as e:
-            QMessageBox.critical(self.main_window, "Lỗi", f"Lỗi lấy danh sách người dùng: {str(e)}")
-            return None, False
+            QMessageBox.critical(self.main_window, "Lỗi", f"Có lỗi xảy ra (kiểm tra ID người mượn có tồn tại không). Chi tiết: {e}")
+
+    def add_book_to_list(self):
+        selected_rows = self.screen.table_loans.selectionModel().selectedRows()
+        if not selected_rows:
+            QMessageBox.warning(self.main_window, "Thông báo", "Vui lòng chọn ít nhất 1 sách từ bảng để thêm!")
+            return
+            
+        for row in selected_rows:
+            row_idx = row.row()
+            book_id = self.screen.table_loans.item(row_idx, 0).text()
+            book_title = self.screen.table_loans.item(row_idx, 1).text()
+            item_text = f"{book_id} - {book_title}"
+            
+            # Kiểm tra xem đã có trong list chưa
+            exists = False
+            for i in range(self.screen.list_book_borrow.count()):
+                if self.screen.list_book_borrow.item(i).text() == item_text:
+                    exists = True
+                    break
+            
+            if not exists:
+                self.screen.list_book_borrow.addItem(item_text)
+        
+    def form_loans(self):
+        self.screen.user_borrow.setText("")
+        self.screen.email_account.setText("")
+        self.screen.list_book_borrow.clear()
+        self.refresh_borrow_table()
+        self.refresh_return_table()
+        self.screen.search_book_borrow.setText("")
+        self.screen.note_loans.setText("")
+        
+        borrow_date_str = self.screen.borrow_date.date().toString("yyyy-MM-dd")
+        return_date_str = self.screen.return_date.date().toString("yyyy-MM-dd")
+        self.screen.borrow_date.setDate(datetime.now())
+        note_loans = self.screen.note_loans.toPlainText()
+        
+        
