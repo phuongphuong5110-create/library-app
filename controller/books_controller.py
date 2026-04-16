@@ -137,33 +137,34 @@ class BooksController:
                 self._main.tr("Select a book in the table first.")
             )
             return
-        reply = QMessageBox.question(
-            self._main,
-            self._main.tr("Confirm delete"),
-            self._main.tr("Delete this book permanently?"),
-            QMessageBox.Yes | QMessageBox.No,
-            QMessageBox.No,
-        )
-        if reply != QMessageBox.Yes:
-            return
-        try:
-            book_model.delete_by_id(bid)
-        except pymysql.Error:
-            self._main.statusBar().showMessage(
-                self._main.tr("Could not delete book.")
-            )
-            return
+        msg = QMessageBox(self._main)
+        msg.setWindowTitle("Xác nhận xóa")
+        msg.setText("Bạn có chắc chắn muốn xóa sách này?")
+        
+        btn_yes = msg.addButton("Xoá", QMessageBox.YesRole)
+        btn_no = msg.addButton("Hủy", QMessageBox.NoRole)
+            
+        msg.exec_()
+        
+        if msg.clickedButton() == btn_yes:
+            try:
+                book_model.delete_by_id(bid)
+            except pymysql.Error:
+                self._main.statusBar().showMessage(
+                    self._main.tr("Không thể xóa sách.")
+                )
+                return
         if self._loaded_book_id == bid:
             self._loaded_book_id = None
         self.refresh_book_table()
-        self._main.statusBar().showMessage(self._main.tr("Book deleted."))
+        self._main.statusBar().showMessage(self._main.tr("Sách đã được xoá."))
 
     def _on_save_new(self):
         title = self._screen.edit_book_title.text()
         code = self._screen.edit_book_code.text()
         if not title.strip() or not code.strip():
             self._main.statusBar().showMessage(
-                self._main.tr("Title and code are required.")
+                self._main.tr("Vui lòng nhập tên sách và mã sách.")
             )
             return
         qty = _parse_int(self._screen.edit_book_quantity.text(), 0)
@@ -174,7 +175,7 @@ class BooksController:
         pid = self._screen.combo_book_publisher.currentData()
         if cid is None or aid is None or pid is None:
             self._main.statusBar().showMessage(
-                self._main.tr("Please select category, author, and publisher.")
+                self._main.tr("Vui lòng chọn danh mục, tác giả và nhà xuất bản.")
             )
             return
         try:
@@ -183,11 +184,11 @@ class BooksController:
             )
         except pymysql.Error as e:
             self._main.statusBar().showMessage(
-                self._main.tr("Could not save book: {0}").format(e.args[0])
+                self._main.tr("Không thể thêm sách: {0}").format(e.args[0])
             )
             return
 
-        self._main.statusBar().showMessage(self._main.tr("New book added."))
+        self._main.statusBar().showMessage(self._main.tr("Sách đã được thêm."))
         self._screen.edit_book_title.clear()
         self._screen.edit_book_code.clear()
         self._screen.edit_book_quantity.clear()
@@ -199,19 +200,19 @@ class BooksController:
         title = self._screen.edit_search_title.text()
         if not title.strip():
             self._main.statusBar().showMessage(
-                self._main.tr("Enter a book title to search.")
+                self._main.tr("Vui lòng nhập tên sách cần tìm.")
             )
             return
         try:
             row = book_model.find_by_title(title)
         except pymysql.Error:
             self._main.statusBar().showMessage(
-                self._main.tr("Search failed (database error).")
+                self._main.tr("Không thể tìm thấy sách.")
             )
             return
         if not row:
             self._loaded_book_id = None
-            self._main.statusBar().showMessage(self._main.tr("No book found."))
+            self._main.statusBar().showMessage(self._main.tr("Không tìm thấy sách."))
             return
         self._loaded_book_id = row["id"]
         self._screen.edit_edit_title.setText(row["title"])
@@ -222,19 +223,19 @@ class BooksController:
         set_combo_current_data(self._screen.combo_edit_category, row["category_id"])
         set_combo_current_data(self._screen.combo_edit_author, row["author_id"])
         set_combo_current_data(self._screen.combo_edit_publisher, row["publisher_id"])
-        self._main.statusBar().showMessage(self._main.tr("Book loaded."))
+        self._main.statusBar().showMessage(self._main.tr("Sách đã được tải."))
 
     def _on_update(self):
         if self._loaded_book_id is None:
             self._main.statusBar().showMessage(
-                self._main.tr("Search or load a book before saving changes.")
+                self._main.tr("Vui lòng tìm hoặc tải một cuốn sách trước khi lưu thay đổi.")
             )
             return
         title = self._screen.edit_edit_title.text()
         code = self._screen.edit_edit_code.text()
         if not title.strip() or not code.strip():
             self._main.statusBar().showMessage(
-                self._main.tr("Title and code are required.")
+                self._main.tr("Vui lòng nhập tên sách và mã sách.")
             )
             return
         qty = _parse_int(self._screen.edit_edit_quantity.text(), 0)
@@ -245,7 +246,7 @@ class BooksController:
         pid = self._screen.combo_edit_publisher.currentData()
         if cid is None or aid is None or pid is None:
             self._main.statusBar().showMessage(
-                self._main.tr("Please select category, author, and publisher.")
+                self._main.tr("Vui lòng chọn danh mục, tác giả và nhà xuất bản.")
             )
             return
         try:
@@ -262,34 +263,35 @@ class BooksController:
             )
         except pymysql.Error as e:
             self._main.statusBar().showMessage(
-                self._main.tr("Could not update book: {0}").format(e.args[0])
+                self._main.tr("Không thể cập nhật sách: {0}").format(e.args[0])
             )
             return
-        self._main.statusBar().showMessage(self._main.tr("Book updated."))
+        self._main.statusBar().showMessage(self._main.tr("Sách đã được cập nhật."))
         self.refresh_book_table()
 
     def _on_delete(self):
         if self._loaded_book_id is None:
             self._main.statusBar().showMessage(
-                self._main.tr("Load a book before deleting.")
+                self._main.tr("Vui lòng tải một cuốn sách trước khi xóa.")
             )
             return
-        reply = QMessageBox.question(
-            self._main,
-            self._main.tr("Confirm delete"),
-            self._main.tr("Delete this book permanently?"),
-            QMessageBox.Yes | QMessageBox.No,
-            QMessageBox.No,
-        )
-        if reply != QMessageBox.Yes:
-            return
-        try:
-            book_model.delete_by_id(self._loaded_book_id)
-        except pymysql.Error:
-            self._main.statusBar().showMessage(
-                self._main.tr("Could not delete book.")
-            )
-            return
+        msg = QMessageBox(self._main)
+        msg.setWindowTitle("Xác nhận xóa")
+        msg.setText("Bạn có chắc chắn muốn xóa sách này?")
+        
+        btn_yes = msg.addButton("Xoá", QMessageBox.YesRole)
+        btn_no = msg.addButton("Hủy", QMessageBox.NoRole)
+            
+        msg.exec_()
+        
+        if msg.clickedButton() == btn_yes:
+            try:
+                book_model.delete_by_id(self._loaded_book_id)
+            except pymysql.Error:
+                self._main.statusBar().showMessage(
+                    self._main.tr("Không thể xóa sách.")
+                )
+                return
         self._loaded_book_id = None
         self._screen.edit_edit_title.clear()
         self._screen.edit_edit_code.clear()
@@ -297,5 +299,5 @@ class BooksController:
         self._screen.edit_edit_year.clear()
         self._screen.edit_edit_description.clear()
         self._screen.edit_search_title.clear()
-        self._main.statusBar().showMessage(self._main.tr("Book deleted."))
+        self._main.statusBar().showMessage(self._main.tr("Sách đã được xóa."))
         self.refresh_book_table()

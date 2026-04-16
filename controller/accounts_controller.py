@@ -168,15 +168,16 @@ class AccountsController:
             QMessageBox.critical(self._main, "Lỗi", f"Không thể kiểm tra tài khoản: {str(e)}")
             return
         
-        reply = QMessageBox.question(
-            self._main, 
-            "Xác nhận xóa", 
-            "Bạn có chắc chắn muốn xóa tài khoản này?",
-            QMessageBox.Yes | QMessageBox.No,
-            QMessageBox.No
-        ) 
+        msg = QMessageBox(self._main)
+        msg.setWindowTitle("Xác nhận xóa")
+        msg.setText("Bạn có chắc chắn muốn xóa tài khoản này?")
         
-        if reply == QMessageBox.Yes:
+        btn_yes = msg.addButton("Xoá", QMessageBox.YesRole)
+        btn_no = msg.addButton("Hủy", QMessageBox.NoRole)
+            
+        msg.exec_()
+        
+        if msg.clickedButton() == btn_yes:
             try:
                 account_model.delete_by_id(account_id)
                 self.refresh_table()

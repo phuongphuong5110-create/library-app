@@ -26,7 +26,7 @@ class PublishersController:
             rows = publisher_model.list_rows()
         except pymysql.Error:
             self._main.statusBar().showMessage(
-                self._main.tr("Could not load publishers (database error).")
+                self._main.tr("Không thể tải danh sách nhà xuất bản.")
             )
             return
         t = self._screen.table_publishers
@@ -60,17 +60,17 @@ class PublishersController:
         name = self._screen.edit_publisher_name.text()
         if not name.strip():
             self._main.statusBar().showMessage(
-                self._main.tr("Enter a publisher name.")
+                self._main.tr("Nhập tên nhà xuất bản.")
             )
             return
         try:
             publisher_model.insert(name)
         except pymysql.Error as e:
             self._main.statusBar().showMessage(
-                self._main.tr("Could not add publisher: {0}").format(e.args[0])
+                self._main.tr("Không thể thêm nhà xuất bản: {0}").format(e.args[0])
             )
             return
-        self._main.statusBar().showMessage(self._main.tr("Publisher added."))
+        self._main.statusBar().showMessage(self._main.tr("Nhà xuất bản đã được thêm."))
         self._clear()
         self.refresh_table()
 
@@ -78,47 +78,48 @@ class PublishersController:
         name = self._screen.edit_publisher_name.text()
         if not name.strip():
             self._main.statusBar().showMessage(
-                self._main.tr("Enter a publisher name.")
+                self._main.tr("Nhập tên nhà xuất bản.")
             )
             return
         if self._selected_id is None:
             self._main.statusBar().showMessage(
-                self._main.tr("Select a row to update.")
+                self._main.tr("Chọn một dòng để cập nhật.")
             )
             return
         try:
             publisher_model.update_row(self._selected_id, name)
         except pymysql.Error as e:
             self._main.statusBar().showMessage(
-                self._main.tr("Could not update publisher: {0}").format(e.args[0])
+                self._main.tr("Không thể cập nhật nhà xuất bản: {0}").format(e.args[0])
             )
             return
-        self._main.statusBar().showMessage(self._main.tr("Publisher updated."))
+        self._main.statusBar().showMessage(self._main.tr("Nhà xuất bản đã được cập nhật."))
         self.refresh_table()
 
     def _delete(self):
         if self._selected_id is None:
             self._main.statusBar().showMessage(
-                self._main.tr("Select a row to delete.")
+                self._main.tr("Chọn một dòng để xóa.")
             )
             return
-        reply = QMessageBox.question(
-            self._main,
-            self._main.tr("Confirm delete"),
-            self._main.tr("Delete this publisher?"),
-            QMessageBox.Yes | QMessageBox.No,
-            QMessageBox.No,
-        )
-        if reply != QMessageBox.Yes:
-            return
-        try:
-            publisher_model.delete_by_id(self._selected_id)
-        except pymysql.Error as e:
-            self._main.statusBar().showMessage(
-                self._main.tr("Could not delete: {0}").format(e.args[0])
-            )
-            return
-        self._main.statusBar().showMessage(self._main.tr("Publisher deleted."))
+        msg = QMessageBox(self._main)
+        msg.setWindowTitle("Xác nhận xóa")
+        msg.setText("Bạn có chắc chắn muốn xóa nhà xuất bản này?")
+        
+        btn_yes = msg.addButton("Xoá", QMessageBox.YesRole)
+        btn_no = msg.addButton("Hủy", QMessageBox.NoRole)
+            
+        msg.exec_()
+        
+        if msg.clickedButton() == btn_yes:
+            try:
+                publisher_model.delete_by_id(self._selected_id)
+            except pymysql.Error as e:
+                self._main.statusBar().showMessage(
+                    self._main.tr("Không thể xóa: {0}").format(e.args[0])
+                )
+                return
+        self._main.statusBar().showMessage(self._main.tr("Nhà xuất bản đã được xóa."))
         self._clear()
         self.refresh_table()
 

@@ -22,6 +22,15 @@ QWidget#nav_panel QPushButton:hover {
 QWidget#nav_panel QPushButton:pressed {
     background-color: #3d5280;
 }
+QWidget#nav_panel QPushButton#btn_logout {
+    background-color: transparent;
+    color: #f28b82;
+    border: 1px solid #f28b82;
+    margin-top: 20px;
+}
+QWidget#nav_panel QPushButton#btn_logout:hover {
+    background-color: rgba(242, 139, 130, 0.2);
+}
 QFrame#card {
     background-color: #ffffff;
     border-radius: 12px;

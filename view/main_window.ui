@@ -158,6 +158,13 @@
          </property>
         </spacer>
        </item>
+       <item>
+        <widget class="QPushButton" name="btn_logout">
+         <property name="text">
+          <string>Đăng xuất</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
     </item>

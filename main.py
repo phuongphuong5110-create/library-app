@@ -5,6 +5,9 @@ ROOT = Path(__file__).resolve().parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+if str(ROOT / 'view') not in sys.path:
+    sys.path.insert(0, str(ROOT / 'view'))
+
 from PyQt5.QtWidgets import QApplication
 
 from app_theme import APP_STYLESHEET
@@ -19,7 +22,7 @@ def main():
     app.setStyleSheet(APP_STYLESHEET)
     window = LoginWindow()
     # window = MainWindowController()
-    window.show()
+    window.showMaximized()
     sys.exit(app.exec_())
 
 

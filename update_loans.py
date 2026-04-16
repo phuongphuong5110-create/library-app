@@ -1,4 +1,6 @@
-from PyQt5.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem, QDialog
+import sys
+
+new_content = """from PyQt5.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem, QDialog
 from PyQt5 import uic
 from pathlib import Path
 from datetime import datetime, timedelta
@@ -31,13 +33,6 @@ class LoansController:
         try:
             self.screen.btn_search_book_return.clicked.connect(self._load_borrowing_list)
             self.screen.btn_return_book.clicked.connect(self.return_book)
-            self.screen.btn_approve_loan.clicked.connect(self.approve_loan_action)
-            
-            #Chỉ admin thấy nút Duyệt
-            role = self.main_window._current_user.get('role') if hasattr(self.main_window, '_current_user') else None
-            if role != 'admin':
-                self.screen.btn_approve_loan.hide()
-
             if hasattr(self.screen, 'btn_dialog_loans'):
                 self.screen.btn_dialog_loans.clicked.connect(self.open_add_loan_dialog)
         except Exception as e:
@@ -109,8 +104,6 @@ class LoansController:
             return 'Đã mượn'
         if status == 'returned':
             return 'Đã trả'
-        if status == 'pending':
-            return 'Chờ duyệt'
         return str(status or '')
 
     def _search_available_books(self):
@@ -173,30 +166,6 @@ class LoansController:
             self.refresh_return_table()
         except Exception as e:
             QMessageBox.critical(self.main_window, "Lỗi", f"Lỗi khi trả sách: {str(e)}")
-
-    def approve_loan_action(self):
-        selected_rows = self.screen.table_loans_return.selectionModel().selectedRows()
-        if not selected_rows:
-            QMessageBox.warning(self.main_window, "Thông báo", "Vui lòng chọn đơn mượn để duyệt!")
-            return
-        
-        row_idx = selected_rows[0].row()
-        loan_id = int(self.screen.table_loans_return.item(row_idx, 0).text())
-        book_title = self.screen.table_loans_return.item(row_idx, 1).text()
-        status_text = self.screen.table_loans_return.item(row_idx, 5).text()
-
-        if status_text != 'Chờ duyệt':
-            QMessageBox.warning(self.main_window, "Thông báo", "Chỉ có thể duyệt các đơn ở trạng thái 'Chờ duyệt'!")
-            return
-
-        try:
-            if loans_model.approve_loan(loan_id):
-                QMessageBox.information(self.main_window, "Thành công", f"Đã duyệt mượn sách '{book_title}'!")
-                self.refresh_return_table()
-            else:
-                QMessageBox.warning(self.main_window, "Thất bại", "Không thể duyệt đơn này.")
-        except Exception as e:
-            QMessageBox.critical(self.main_window, "Lỗi", f"Lỗi khi duyệt: {str(e)}")
             
     def borrow_book_action(self):
         list_widget = self.dialog.list_book_borrow
@@ -226,24 +195,19 @@ class LoansController:
             
         due_date = self.dialog.return_date.date().toString("yyyy-MM-dd")
         
-        # Xác định status dựa trên role
-        current_role = self.main_window._current_user.get('role') if hasattr(self.main_window, '_current_user') else 'reader'
-        loan_status = 'borrowed' if current_role == 'admin' else 'pending'
-
         success_count = 0
         try:
             for i in range(list_widget.count()):
                 item_text = list_widget.item(i).text()
                 book_id = int(item_text.split(" - ")[0])
-                loans_model.borrow_book(book_id, account_id, due_date, status=loan_status)
+                loans_model.borrow_book(book_id, account_id, due_date)
                 success_count += 1
             
-            msg = f"Đã gửi yêu cầu mượn {success_count} quyển sách!" if loan_status == 'pending' else f"Đã mượn thành công {success_count} quyển sách!"
-            QMessageBox.information(self.main_window, "Thành công", msg)
+            QMessageBox.information(self.main_window, "Thành công", f"Đã mượn thành công {success_count} quyển sách!")
             self.dialog.accept()
             self.refresh_return_table()
         except Exception as e:
-            QMessageBox.critical(self.main_window, "Lỗi", f"Có lỗi xảy ra. Chi tiết: {e}")
+            QMessageBox.critical(self.main_window, "Lỗi", f"Có lỗi xảy ra (kiểm tra ID người mượn có tồn tại không). Chi tiết: {e}")
 
     def add_book_to_list(self):
         selected_rows = self.dialog.table_loans_return.selectionModel().selectedRows()
@@ -265,3 +229,8 @@ class LoansController:
             
             if not exists:
                 self.dialog.list_book_borrow.addItem(item_text)
+"""
+
+with open('/Users/macos/Python/thuchanh/app/appthuvien/controller/loans_controller.py', 'w') as f:
+    f.write(new_content)
+print("Updated successfully")

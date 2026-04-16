@@ -26,7 +26,7 @@ class AuthorsController:
             rows = author_model.list_rows()
         except pymysql.Error:
             self._main.statusBar().showMessage(
-                self._main.tr("Could not load authors (database error).")
+                self._main.tr("Không thể tải danh sách tác giả.")
             )
             return
         t = self._screen.table_authors
@@ -59,62 +59,69 @@ class AuthorsController:
     def _add(self):
         name = self._screen.edit_author_name.text()
         if not name.strip():
-            self._main.statusBar().showMessage(self._main.tr("Enter an author name."))
+            self._main.statusBar().showMessage(self._main.tr("Vui lòng nhập tên tác giả."))
             return
         try:
             author_model.insert(name)
         except pymysql.Error as e:
             self._main.statusBar().showMessage(
-                self._main.tr("Could not add author: {0}").format(e.args[0])
+                self._main.tr("Không thể thêm tác giả: {0}").format(e.args[0])
             )
             return
-        self._main.statusBar().showMessage(self._main.tr("Author added."))
+        self._main.statusBar().showMessage(self._main.tr("Tác giả đã được thêm."))
         self._clear()
         self.refresh_table()
 
     def _update(self):
         name = self._screen.edit_author_name.text()
         if not name.strip():
-            self._main.statusBar().showMessage(self._main.tr("Enter an author name."))
+            self._main.statusBar().showMessage(self._main.tr("Vui lòng nhập tên tác giả."))
             return
         if self._selected_id is None:
             self._main.statusBar().showMessage(
-                self._main.tr("Select a row to update.")
+                self._main.tr("Vui lòng chọn một tác giả trong bảng.")
             )
             return
         try:
             author_model.update_row(self._selected_id, name)
         except pymysql.Error as e:
             self._main.statusBar().showMessage(
-                self._main.tr("Could not update author: {0}").format(e.args[0])
+                self._main.tr("Không thể cập nhật tác giả: {0}").format(e.args[0])
             )
             return
-        self._main.statusBar().showMessage(self._main.tr("Author updated."))
+        self._main.statusBar().showMessage(self._main.tr("Tác giả đã được cập nhật."))
+        self._clear()
         self.refresh_table()
 
     def _delete(self):
         if self._selected_id is None:
             self._main.statusBar().showMessage(
-                self._main.tr("Select a row to delete.")
+                self._main.tr("Vui lòng chọn một tác giả trong bảng.")
             )
             return
-        reply = QMessageBox.question(
-            self._main,
-            self._main.tr("Confirm delete"),
-            self._main.tr("Delete this author?"),
-            QMessageBox.Yes | QMessageBox.No,
-            QMessageBox.No,
-        )
-        if reply != QMessageBox.Yes:
-            return
+        msg = QMessageBox(self._main)
+        msg.setWindowTitle("Xác nhận xóa")
+        msg.setText("Bạn có chắc chắn muốn xóa tác giả này?")
+        
+        btn_yes = msg.addButton("Xoá", QMessageBox.YesRole)
+        btn_no = msg.addButton("Hủy", QMessageBox.NoRole)
+            
+        msg.exec_()
+        
+        if msg.clickedButton() == btn_yes:
+            try:
+                author_model.delete_by_id(self._selected_id)
+                self.refresh_table()
+            except pymysql.Error as e:
+                QMessageBox.critical(self._main, "Lỗi", f"Không thể xóa tác giả: {str(e)}")
         try:
             author_model.delete_by_id(self._selected_id)
         except pymysql.Error as e:
             self._main.statusBar().showMessage(
-                self._main.tr("Could not delete: {0}").format(e.args[0])
+                self._main.tr("Không thể xóa: {0}").format(e.args[0])
             )
             return
-        self._main.statusBar().showMessage(self._main.tr("Author deleted."))
+        self._main.statusBar().showMessage(self._main.tr("Tác giả đã được xoá."))
         self._clear()
         self.refresh_table()
 

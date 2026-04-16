@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="newPrefix">
+    <file>anh_thu_vien.bmp</file>
+  </qresource>
+</RCC>

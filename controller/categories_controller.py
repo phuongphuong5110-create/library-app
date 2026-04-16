@@ -26,7 +26,7 @@ class CategoriesController:
             rows = category_model.list_rows()
         except pymysql.Error:
             self._main.statusBar().showMessage(
-                self._main.tr("Could not load categories (database error).")
+                self._main.tr("Không thể tải danh sách thể loại.")
             )
             return
         t = self._screen.table_categories
@@ -60,17 +60,17 @@ class CategoriesController:
         name = self._screen.edit_category_name.text()
         if not name.strip():
             self._main.statusBar().showMessage(
-                self._main.tr("Enter a category name.")
+                self._main.tr("Nhập tên thể loại.")
             )
             return
         try:
             category_model.insert(name)
         except pymysql.Error as e:
             self._main.statusBar().showMessage(
-                self._main.tr("Could not add category: {0}").format(e.args[0])
+                self._main.tr("Không thể thêm thể loại: {0}").format(e.args[0])
             )
             return
-        self._main.statusBar().showMessage(self._main.tr("Category added."))
+        self._main.statusBar().showMessage(self._main.tr("Thể loại đã được thêm."))
         self._clear()
         self.refresh_table()
 
@@ -78,47 +78,48 @@ class CategoriesController:
         name = self._screen.edit_category_name.text()
         if not name.strip():
             self._main.statusBar().showMessage(
-                self._main.tr("Enter a category name.")
+                self._main.tr("Nhập tên thể loại.")
             )
             return
         if self._selected_id is None:
             self._main.statusBar().showMessage(
-                self._main.tr("Select a row to update.")
+                self._main.tr("Chọn một dòng để cập nhật.")
             )
             return
         try:
             category_model.update_row(self._selected_id, name)
         except pymysql.Error as e:
             self._main.statusBar().showMessage(
-                self._main.tr("Could not update category: {0}").format(e.args[0])
+                self._main.tr("Không thể cập nhật thể loại: {0}").format(e.args[0])
             )
             return
-        self._main.statusBar().showMessage(self._main.tr("Category updated."))
+        self._main.statusBar().showMessage(self._main.tr("Thể loại đã được cập nhật."))
         self.refresh_table()
 
     def _delete(self):
         if self._selected_id is None:
             self._main.statusBar().showMessage(
-                self._main.tr("Select a row to delete.")
+                self._main.tr("Chọn một dòng để xóa.")
             )
             return
-        reply = QMessageBox.question(
-            self._main,
-            self._main.tr("Confirm delete"),
-            self._main.tr("Delete this category?"),
-            QMessageBox.Yes | QMessageBox.No,
-            QMessageBox.No,
-        )
-        if reply != QMessageBox.Yes:
-            return
-        try:
-            category_model.delete_by_id(self._selected_id)
-        except pymysql.Error as e:
-            self._main.statusBar().showMessage(
-                self._main.tr("Could not delete: {0}").format(e.args[0])
-            )
-            return
-        self._main.statusBar().showMessage(self._main.tr("Category deleted."))
+        msg = QMessageBox(self._main)
+        msg.setWindowTitle("Xác nhận xóa")
+        msg.setText("Bạn có chắc chắn muốn xóa thể loại này?")
+        
+        btn_yes = msg.addButton("Xoá", QMessageBox.YesRole)
+        btn_no = msg.addButton("Hủy", QMessageBox.NoRole)
+            
+        msg.exec_()
+        
+        if msg.clickedButton() == btn_yes:
+            try:
+                category_model.delete_by_id(self._selected_id)
+            except pymysql.Error as e:
+                self._main.statusBar().showMessage(
+                    self._main.tr("Không thể xóa: {0}").format(e.args[0])
+                )
+                return
+        self._main.statusBar().showMessage(self._main.tr("Thể loại đã được xóa."))
         self._clear()
         self.refresh_table()
 

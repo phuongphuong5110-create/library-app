@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Đăng nhập - Hệ thống thư viện</string>
+   <string>Đăng ký - Hệ thống thư viện</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QLabel" name="label_image">
@@ -45,10 +45,10 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>850</x>
-      <y>180</y>
+      <x>860</x>
+      <y>170</y>
       <width>271</width>
-      <height>339</height>
+      <height>394</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -71,7 +71,7 @@
         <string notr="true">color: black;</string>
        </property>
        <property name="text">
-        <string>Đăng nhập</string>
+        <string>Đăng ký</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -95,12 +95,12 @@
         <string notr="true">color: black;</string>
        </property>
        <property name="text">
-        <string>Tên đăng nhập:</string>
+        <string>Họ và tên:</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_username">
+      <widget class="QLineEdit" name="lineEdit_name">
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -119,7 +119,7 @@
         </font>
        </property>
        <property name="placeholderText">
-        <string>Nhập tên tài khoản...</string>
+        <string>Nhập họ tên...</string>
        </property>
       </widget>
      </item>
@@ -140,12 +140,102 @@
         <string notr="true">color: black;</string>
        </property>
        <property name="text">
+        <string>Email:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit_email">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>400</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="placeholderText">
+        <string>Nhập email...</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_pass_2">
+       <property name="maximumSize">
+        <size>
+         <width>400</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: black;</string>
+       </property>
+       <property name="text">
+        <string>Tên đăng nhập:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit_username_2">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>400</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="placeholderText">
+        <string>Nhập tên đăng nhập...</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_pass_4">
+       <property name="maximumSize">
+        <size>
+         <width>400</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: black;</string>
+       </property>
+       <property name="text">
         <string>Mật khẩu:</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_password">
+      <widget class="QLineEdit" name="lineEdit_password_regist">
        <property name="minimumSize">
         <size>
          <width>0</width>
@@ -172,63 +262,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="btn_login">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>50</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>400</width>
-         <height>50</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-    background-color: black;
-    color: white;
-    border-radius: 5px;
-}
-QPushButton:hover {
-    background-color: #333333;
-}</string>
-       </property>
-       <property name="text">
-        <string>Đăng nhập</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_user_2">
-       <property name="maximumSize">
-        <size>
-         <width>400</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: black;</string>
-       </property>
-       <property name="text">
-        <string>Chưa có tài khoản?</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btn_regist_1">
+      <widget class="QPushButton" name="btn_regist">
        <property name="minimumSize">
         <size>
          <width>0</width>
