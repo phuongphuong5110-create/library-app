@@ -34,14 +34,15 @@ class LoansController:
             self.screen.btn_approve_loan.clicked.connect(self.approve_loan_action)
             
             #Chỉ admin thấy nút Duyệt
-            role = self.main_window._current_user.get('role') if hasattr(self.main_window, '_current_user') else None
+            user = getattr(self.main_window, '_current_user', {})
+            role = str(user.get('role') or '').lower()
             if role != 'admin':
                 self.screen.btn_approve_loan.hide()
 
             if hasattr(self.screen, 'btn_dialog_loans'):
                 self.screen.btn_dialog_loans.clicked.connect(self.open_add_loan_dialog)
             
-            # Kết nối các bộ lọc
+            #các bộ lọc
             self.screen.combo_filter_status.currentIndexChanged.connect(self._load_borrowing_list)
             self.screen.combo_filter_borrower.currentIndexChanged.connect(self._load_borrowing_list)
             self.screen.combo_filter_date.currentIndexChanged.connect(self._load_borrowing_list)
@@ -65,11 +66,10 @@ class LoansController:
         except Exception as e:
             print(f"Lỗi kết nối button trong dialog_loans: {e}")
             
-        # Load danh sách accounts vào combobox
+        # Load danh sách vào combobox
         try:
             accounts = loans_model.get_accounts()
             self.dialog.user_borrow.clear()
-            # Thêm item trống đầu tiên
             self.dialog.user_borrow.addItem("", None)
             for acc in accounts:
                 self.dialog.user_borrow.addItem(acc['name'], acc)
@@ -88,7 +88,6 @@ class LoansController:
         self.dialog.exec_()
 
     def _on_borrower_changed(self, index):
-        # Khi chọn một account từ list, tự động điền email
         data = self.dialog.user_borrow.itemData(index)
         if data:
             self.dialog.email_account.setText(data.get('email', ''))
@@ -112,9 +111,17 @@ class LoansController:
             status = "Đang còn" if row['quantity'] > 0 else "Hết"
             t.setItem(r, 3, QTableWidgetItem(status))
 
+    def _get_filter_account_id(self):
+        user = getattr(self.main_window, '_current_user', None)
+        role = str(user.get('role') or '').lower() if user else None
+        if not user or role == 'admin':
+            return None
+        return user.get('id')
+
     def refresh_return_table(self):
         try:
-            rows = loans_model.list_borrowing()
+            account_id = self._get_filter_account_id()
+            rows = loans_model.list_borrowing(account_id)
         except Exception as e:
             self.main_window.statusBar().showMessage(f"Lỗi: {str(e)}")
             print("ERROR:", e)
@@ -125,16 +132,15 @@ class LoansController:
         for r, row in enumerate(rows):
             t.setItem(r, 0, QTableWidgetItem(str(row["id"])))
             t.setItem(r, 1, QTableWidgetItem(row["title"]))
-            t.setItem(r, 2, QTableWidgetItem(row.get("account_name", "")))
-            t.setItem(r, 3, QTableWidgetItem(str(row["borrow_date"])))
-            t.setItem(r, 4, QTableWidgetItem(str(row["due_date"] or "")))
+            t.setItem(r, 2, QTableWidgetItem(row.get("account_name") or ""))
+            t.setItem(r, 3, QTableWidgetItem(row["borrow_date"].strftime("%d/%m/%Y")))
+            t.setItem(r, 4, QTableWidgetItem(row["due_date"].strftime("%d/%m/%Y")))
             t.setItem(r, 5, QTableWidgetItem(self._format_loan_status(row.get("status"))))
-        
-        self._populate_filter_combos()
+
 
     def _format_loan_status(self, status):
         if status == 'borrowed':
-            return 'Đã mượn'
+            return 'Đang mượn'
         if status == 'returned':
             return 'Đã trả'
         if status == 'pending':
@@ -169,24 +175,20 @@ class LoansController:
         filter_date = self.screen.combo_filter_date.currentText()
 
         try:
-            rows = loans_model.list_borrowing()
+            account_id = self._get_filter_account_id()
+            rows = loans_model.list_borrowing(account_id)
             filtered_rows = []
             
             for row in rows:
-                # Filter by status
                 status_display = self._format_loan_status(row.get("status"))
                 match_status = (filter_status == "Tất cả" or status_display == filter_status)
                 
-                # Filter by borrower
                 match_borrower = (filter_borrower == "Tất cả" or row.get("account_name") == filter_borrower)
                 
-                # Filter by date
                 match_date = (filter_date == "Tất cả" or str(row["borrow_date"]) == filter_date)
-
-                # Filter by search text (title or borrower name)
                 match_search = (not search_text or 
-                                search_text in row['title'].lower() or 
-                                search_text in row.get('account_name', '').lower())
+                                search_text in row.get('title', '').lower() or 
+                                search_text in (row.get('account_name') or "").lower())
                 
                 if match_search and match_status and match_borrower and match_date:
                     filtered_rows.append(row)
@@ -199,17 +201,20 @@ class LoansController:
     def _display_borrowing_rows(self, rows):
         t = self.screen.table_loans_return
         t.setRowCount(len(rows))
+        print(rows)
         for r, row in enumerate(rows):
             t.setItem(r, 0, QTableWidgetItem(str(row["id"])))
             t.setItem(r, 1, QTableWidgetItem(row["title"]))
-            t.setItem(r, 2, QTableWidgetItem(row.get("account_name", "")))
-            t.setItem(r, 3, QTableWidgetItem(str(row["borrow_date"])))
-            t.setItem(r, 4, QTableWidgetItem(str(row["due_date"] or "")))
+            t.setItem(r, 2, QTableWidgetItem(row.get("account_name") or ""))
+            t.setItem(r, 3, QTableWidgetItem(row["borrow_date"].strftime("%d/%m/%Y")))
+            print(row["borrow_date"])
+            t.setItem(r, 4, QTableWidgetItem(row["due_date"].strftime("%d/%m/%Y")))
             t.setItem(r, 5, QTableWidgetItem(self._format_loan_status(row.get("status"))))
 
     def _populate_filter_combos(self):
         try:
-            rows = loans_model.list_borrowing()
+            account_id = self._get_filter_account_id()
+            rows = loans_model.list_borrowing(account_id)
             
             # Lưu lại selection hiện tại nếu có
             current_borrower = self.screen.combo_filter_borrower.currentText()
@@ -220,7 +225,14 @@ class LoansController:
             self.screen.combo_filter_date.blockSignals(True)
             
             # Người mượn
-            borrowers = sorted(list(set(row.get("account_name", "") for row in rows if row.get("account_name"))))
+            user = getattr(self.main_window, '_current_user', None)
+            role = str(user.get('role') or '').lower() if user else None
+            if role == 'admin': # Admin
+                all_accounts = loans_model.get_accounts()
+                borrowers = sorted([acc['name'] for acc in all_accounts if acc.get('name')])
+            else: # Reader
+                borrowers = sorted(list(set(row.get("account_name", "") for row in rows if row.get("account_name"))))
+            
             self.screen.combo_filter_borrower.clear()
             self.screen.combo_filter_borrower.addItem("Tất cả")
             self.screen.combo_filter_borrower.addItems(borrowers)
@@ -231,7 +243,6 @@ class LoansController:
             self.screen.combo_filter_date.addItem("Tất cả")
             self.screen.combo_filter_date.addItems(dates)
             
-            # Khôi phục selection
             idx_b = self.screen.combo_filter_borrower.findText(current_borrower)
             if idx_b >= 0: self.screen.combo_filter_borrower.setCurrentIndex(idx_b)
             

@@ -10,12 +10,19 @@ LEFT JOIN accounts ON loans.account_id = accounts.id
 """
 
 _LOAN_DETAILED_SELECT = _LOAN_SELECT
-def list_borrowing():
-    # Lấy danh sách sách đang mượn HOẶC đang chờ duyệt
+def list_borrowing(account_id=None):
+    # Lấy danh sách sách mượn
+    sql = _LOAN_SELECT + " WHERE 1=1"
+    params = []
+    
+    if account_id:
+        sql += " AND loans.account_id = %s"
+        params.append(account_id)
+        
+    sql += " ORDER BY loans.borrow_date DESC"
+    
     with cursor() as cur:
-        cur.execute(
-            _LOAN_SELECT + " WHERE loans.status IN ('borrowed', 'pending') ORDER BY loans.borrow_date DESC"
-        )
+        cur.execute(sql, params)
         return cur.fetchall()
 
 def list_returned():
@@ -72,35 +79,27 @@ def borrow_book(book_id, account_id, due_date, status='borrowed'):
             )
 
 def approve_loan(loan_id):
-    # Admin duyệt đơn mượn
     with cursor() as cur:
-        # Lấy books_id từ loan
         cur.execute("SELECT books_id, status FROM loans WHERE id = %s", (loan_id,))
         result = cur.fetchone()
         if result and result['status'] == 'pending':
             book_id = result['books_id']
-            # Cập nhật trạng thái thành borrowed
             cur.execute("UPDATE loans SET status = 'borrowed' WHERE id = %s", (loan_id,))
-            # CHÍNH THỨC trừ số lượng sách trong kho
             cur.execute("UPDATE books SET quantity = quantity - 1 WHERE id = %s", (book_id,))
             return True
     return False
 
 def return_book(loan_id):
-    # Trả sách 
     with cursor() as cur:
-        # Lấy books_id từ loan
         cur.execute("SELECT books_id, status FROM loans WHERE id = %s", (loan_id,))
         result = cur.fetchone()
         if result:
             book_id = result['books_id']
             status = result['status']
-            # Cập nhật loan sang trạng thái returned
             cur.execute(
                 "UPDATE loans SET return_date = CURDATE(), status = 'returned' WHERE id = %s",
                 (loan_id,)
             )
-            # Nếu trước đó đã mượn (đã trừ kho) thì giờ cộng lại kho
             if status == 'borrowed':
                 cur.execute("UPDATE books SET quantity = quantity + 1 WHERE id = %s", (book_id,))
         

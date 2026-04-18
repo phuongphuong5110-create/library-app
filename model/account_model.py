@@ -85,6 +85,22 @@ def find_by_email(email):
         )
         return cur.fetchone()
 
+
+def find_by_username(username):
+    if not username:
+        return None
+    with cursor() as cur:
+        cur.execute(
+            """
+            SELECT id, name, email, role, username
+            FROM accounts
+            WHERE username = %s
+            LIMIT 1
+            """,
+            (username.strip(),),
+        )
+        return cur.fetchone()
+
 class Account:
     def __init__(self, conn):
         self.conn = conn
@@ -107,13 +123,15 @@ class Account:
     def check_admin_login(self, username, password):
         hashed_password = self._hash_password(password)
         cursor = self.conn.cursor()
-        query = "SELECT * FROM accounts WHERE username = %s AND password = %s AND role = 'admin'"
+        # Kiểm tra cả 'admin' và 'Admin'
+        query = "SELECT * FROM accounts WHERE username = %s AND password = %s AND (role = 'admin' OR role = 'Admin')"
         cursor.execute(query, (username, hashed_password))
         return cursor.fetchone()
 
     def check_reader_login(self, username, password):
         hashed_password = self._hash_password(password)
         cursor = self.conn.cursor()
-        query = "SELECT * FROM accounts WHERE username = %s AND password = %s AND role = 'reader'"
+        # Kiểm tra 'reader', 'Reader' hoặc 'Người dùng' (theo schema.sql)
+        query = "SELECT * FROM accounts WHERE username = %s AND password = %s AND (role = 'reader' OR role = 'Reader' OR role = 'Người dùng')"
         cursor.execute(query, (username, hashed_password))
         return cursor.fetchone()

@@ -139,6 +139,11 @@ class LoginWindow(QMainWindow):
             acc_model = Account(con)
             user = acc_model.check_admin_login(username, password) or acc_model.check_reader_login(username, password)
             if user:
+                if 'role' in user and user['role']:
+                    user['role'] = user['role'].lower()
+                    if user['role'] == 'người dùng':
+                        user['role'] = 'reader'         
+                
                 import main
                 main.current_user = user
                 self.open_main()
@@ -189,6 +194,11 @@ class RegistWindow(QMainWindow):
             # Kiểm tra trùng email
             if account_model.find_by_email(email):
                 QMessageBox.warning(self, "Lỗi", "Email đã tồn tại! Vui lòng sử dụng email khác.")
+                return
+
+            # Kiểm tra trùng username
+            if account_model.find_by_username(username):
+                QMessageBox.warning(self, "Lỗi", "Tên đăng nhập đã tồn tại! Vui lòng sử dụng tên khác.")
                 return
 
             import hashlib
