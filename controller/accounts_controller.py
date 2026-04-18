@@ -151,7 +151,7 @@ class AccountsController:
                 self._main.tr("Vui lòng chọn một tài khoản trong bảng.")
             )
             return
-        
+
         # Kiểm tra quyền admin
         if not self._current_user or self._current_user.get('role') != 'admin':
             QMessageBox.warning(self._main, "Lỗi", "Chỉ admin mới có quyền xóa tài khoản!")
@@ -185,4 +185,13 @@ class AccountsController:
             except pymysql.Error as e:
                 QMessageBox.critical(self._main, "Lỗi", f"Không thể xóa tài khoản: {str(e)}")
 
+    def is_email_exists(email):
+        query = "SELECT 1 FROM users WHERE email = %s LIMIT 1"
+        cursor.execute(query, (email,))
+        return cursor.fetchone()
     
+    def handle_register(self):
+        if is_email_exists(self.email):
+            QMessageBox.warning(self._main, "Lỗi", "Email đã tồn tại!")
+        return
+

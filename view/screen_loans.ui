@@ -13,103 +13,239 @@
   <property name="windowTitle">
    <string>Mượn / Trả sách</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_main">
+  <layout class="QVBoxLayout" name="verticalLayout_root">
    <property name="spacing">
-    <number>10</number>
+    <number>16</number>
    </property>
    <property name="leftMargin">
-    <number>20</number>
+    <number>24</number>
    </property>
    <property name="topMargin">
-    <number>20</number>
+    <number>24</number>
    </property>
    <property name="rightMargin">
-    <number>20</number>
+    <number>24</number>
    </property>
    <property name="bottomMargin">
-    <number>20</number>
+    <number>24</number>
    </property>
+   <item>
+    <widget class="QLabel" name="label_title">
+     <property name="font">
+      <font>
+       <pointsize>18</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Quản lý mượn/trả</string>
+     </property>
+    </widget>
+   </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_top">
      <property name="spacing">
-      <number>10</number>
+      <number>12</number>
      </property>
      <item>
       <widget class="QLabel" name="label_return">
-       <property name="text">
-        <string>Tìm kiếm sách:</string>
-       </property>
        <property name="font">
         <font>
-         <weight>75</weight>
          <bold>true</bold>
         </font>
+       </property>
+       <property name="text">
+        <string>Tìm kiếm:</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QLineEdit" name="search_book_return">
+       <property name="minimumSize">
+        <size>
+         <width>350</width>
+         <height>36</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>36</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>-1</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">padding: 0 10px; border: 1px solid #ced4da; border-radius: 4px; font-size: 14px;</string>
+       </property>
        <property name="placeholderText">
         <string>Nhập tên sách hoặc tên người mượn...</string>
-       </property>
-       <property name="minimumHeight">
-        <number>35</number>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="btn_search_book_return">
-       <property name="text">
-        <string>Tìm kiếm</string>
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>36</height>
+        </size>
        </property>
-       <property name="minimumWidth">
-        <number>100</number>
-       </property>
-       <property name="minimumHeight">
-        <number>35</number>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>36</height>
+        </size>
        </property>
        <property name="styleSheet">
         <string notr="true">background-color: #1a73e8; color: white; border-radius: 4px; font-weight: bold;</string>
+       </property>
+       <property name="text">
+        <string>Tìm kiếm</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="btn_dialog_loans">
-       <property name="text">
-        <string>＋ Thêm mới</string>
-       </property>
-       <property name="minimumWidth">
-        <number>120</number>
-       </property>
-       <property name="minimumHeight">
-        <number>35</number>
+       <property name="minimumSize">
+        <size>
+         <width>120</width>
+         <height>36</height>
+        </size>
        </property>
        <property name="styleSheet">
         <string notr="true">background-color: #1a73e8; color: white; border-radius: 4px; font-weight: bold;</string>
+       </property>
+       <property name="text">
+        <string>＋ Thêm mới</string>
        </property>
       </widget>
      </item>
     </layout>
    </item>
    <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_filters">
+     <property name="spacing">
+      <number>10</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Bộ lọc:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Trạng thái:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="combo_filter_status">
+       <property name="minimumSize">
+        <size>
+         <width>150</width>
+         <height>30</height>
+        </size>
+       </property>
+       <item>
+        <property name="text">
+         <string>Tất cả</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Đang mượn</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Đã trả</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Chờ duyệt</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Người mượn:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="combo_filter_borrower">
+       <property name="minimumSize">
+        <size>
+         <width>150</width>
+         <height>30</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Ngày mượn:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="combo_filter_date">
+       <property name="minimumSize">
+        <size>
+         <width>150</width>
+         <height>30</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_filters">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
     <widget class="QTableWidget" name="table_loans_return">
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
      <property name="alternatingRowColors">
       <bool>true</bool>
-     </property>
-     <property name="selectionBehavior">
-      <enum>QAbstractItemView::SelectRows</enum>
      </property>
      <property name="selectionMode">
       <enum>QAbstractItemView::SingleSelection</enum>
      </property>
-     <property name="editTriggers">
-      <set>QAbstractItemView::NoEditTriggers</set>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
      </property>
      <property name="showGrid">
       <bool>true</bool>
-     </property>
-     <property name="rowCount">
-      <number>0</number>
      </property>
      <column>
       <property name="text">
@@ -144,9 +280,12 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_return_actions">
+    <layout class="QHBoxLayout" name="horizontalLayout_actions">
+     <property name="spacing">
+      <number>10</number>
+     </property>
      <item>
-      <spacer name="horizontalSpacer_return_bottom">
+      <spacer name="horizontalSpacer_actions">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -160,33 +299,33 @@
      </item>
      <item>
       <widget class="QPushButton" name="btn_approve_loan">
-       <property name="text">
-        <string>Duyệt mượn</string>
-       </property>
-       <property name="minimumWidth">
-        <number>130</number>
-       </property>
-       <property name="minimumHeight">
-        <number>40</number>
+       <property name="minimumSize">
+        <size>
+         <width>120</width>
+         <height>36</height>
+        </size>
        </property>
        <property name="styleSheet">
         <string notr="true">background-color: #1a73e8; color: white; border-radius: 4px; font-weight: bold;</string>
+       </property>
+       <property name="text">
+        <string>Duyệt mượn</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="btn_return_book">
-       <property name="text">
-        <string>Trả sách</string>
-       </property>
-       <property name="minimumWidth">
-        <number>130</number>
-       </property>
-       <property name="minimumHeight">
-        <number>40</number>
+       <property name="minimumSize">
+        <size>
+         <width>120</width>
+         <height>36</height>
+        </size>
        </property>
        <property name="styleSheet">
         <string notr="true">background-color: #1a73e8; color: white; border-radius: 4px; font-weight: bold;</string>
+       </property>
+       <property name="text">
+        <string>Trả sách</string>
        </property>
       </widget>
      </item>

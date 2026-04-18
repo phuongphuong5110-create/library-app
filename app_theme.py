@@ -58,7 +58,7 @@ QGroupBox::title {
     left: 12px;
     padding: 0 6px;
 }
-QLineEdit, QPlainTextEdit, QComboBox {
+QLineEdit, QPlainTextEdit {
     border: 1px solid #dadce0;
     border-radius: 6px;
     padding: 6px 10px;
@@ -131,5 +131,26 @@ QTabBar::tab {
 QTabBar::tab:selected {
     background-color: #ffffff;
     border-bottom: 2px solid #1a73e8;
+}
+ui->combo_filter_status->setStyleSheet(R"(
+QComboBox QAbstractItemView {
+    border: none;
+    padding: 0px;
+    margin: 0px;
+    outline: 0;
+}
+
+QComboBox QAbstractItemView::item {
+    height: 24px;
+    padding: 0px 8px;
+    margin: 0px;
+}
+
+QComboBox QAbstractItemView::item:hover {
+    background-color: #e8f0fe;
+}
+
+QComboBox QAbstractItemView::item:selected {
+    background-color: #d2e3fc;
 }
 """

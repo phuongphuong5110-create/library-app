@@ -75,7 +75,10 @@
      </widget>
     </item>
     <item row="2" column="0" colspan="3">
-     <widget class="QLineEdit" name="user_borrow">
+     <widget class="QComboBox" name="user_borrow">
+      <property name="editable">
+       <bool>true</bool>
+      </property>
       <property name="maximumSize">
        <size>
         <width>16777215</width>

@@ -50,7 +50,7 @@ def search_books(search_text):
 def get_accounts():
     # Lấy danh sách người dùng
     with cursor() as cur:
-        cur.execute("SELECT id, name FROM accounts ORDER BY name")
+        cur.execute("SELECT id, name, email FROM accounts ORDER BY name")
         return cur.fetchall()
 
 def borrow_book(book_id, account_id, due_date, status='borrowed'):

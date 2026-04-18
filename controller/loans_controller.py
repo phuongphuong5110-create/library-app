@@ -40,10 +40,16 @@ class LoansController:
 
             if hasattr(self.screen, 'btn_dialog_loans'):
                 self.screen.btn_dialog_loans.clicked.connect(self.open_add_loan_dialog)
+            
+            # Kết nối các bộ lọc
+            self.screen.combo_filter_status.currentIndexChanged.connect(self._load_borrowing_list)
+            self.screen.combo_filter_borrower.currentIndexChanged.connect(self._load_borrowing_list)
+            self.screen.combo_filter_date.currentIndexChanged.connect(self._load_borrowing_list)
         except Exception as e:
             print(f"Lỗi kết nối button trên screen_loans: {e}")
         
         self.refresh_return_table()
+        self._populate_filter_combos()
 
     def open_add_loan_dialog(self):
         self.dialog = QDialog(self.main_window)
@@ -55,10 +61,22 @@ class LoansController:
             self.dialog.btn_cancel_loans.clicked.connect(self.dialog.reject)
             self.dialog.btn_addbook_loans.clicked.connect(self.add_book_to_list)
             self.dialog.search_book_borrow.textChanged.connect(self._search_available_books)
+            self.dialog.user_borrow.activated.connect(self._on_borrower_changed)
         except Exception as e:
             print(f"Lỗi kết nối button trong dialog_loans: {e}")
             
-        self.dialog.user_borrow.setText("")
+        # Load danh sách accounts vào combobox
+        try:
+            accounts = loans_model.get_accounts()
+            self.dialog.user_borrow.clear()
+            # Thêm item trống đầu tiên
+            self.dialog.user_borrow.addItem("", None)
+            for acc in accounts:
+                self.dialog.user_borrow.addItem(acc['name'], acc)
+        except Exception as e:
+            print(f"Lỗi load accounts: {e}")
+
+        self.dialog.user_borrow.setEditText("")
         self.dialog.email_account.setText("")
         self.dialog.list_book_borrow.clear()
         self.dialog.search_book_borrow.setText("")
@@ -68,6 +86,14 @@ class LoansController:
         
         self.refresh_borrow_table_dialog()
         self.dialog.exec_()
+
+    def _on_borrower_changed(self, index):
+        # Khi chọn một account từ list, tự động điền email
+        data = self.dialog.user_borrow.itemData(index)
+        if data:
+            self.dialog.email_account.setText(data.get('email', ''))
+        else:
+            pass
 
     def refresh_borrow_table_dialog(self):
         try:
@@ -103,6 +129,8 @@ class LoansController:
             t.setItem(r, 3, QTableWidgetItem(str(row["borrow_date"])))
             t.setItem(r, 4, QTableWidgetItem(str(row["due_date"] or "")))
             t.setItem(r, 5, QTableWidgetItem(self._format_loan_status(row.get("status"))))
+        
+        self._populate_filter_combos()
 
     def _format_loan_status(self, status):
         if status == 'borrowed':
@@ -135,18 +163,40 @@ class LoansController:
             t.setItem(r, 3, QTableWidgetItem(status))
 
     def _load_borrowing_list(self):
-        search_text = self.screen.search_book_return.text().strip()
-        if search_text:
-            try:
-                rows = loans_model.list_borrowing()
-                rows = [r for r in rows if search_text.lower() in r['title'].lower()]
-            except Exception as e:
-                QMessageBox.critical(self.main_window, "Lỗi", f"Lỗi tìm kiếm: {str(e)}")
-                return
-        else:
-            self.refresh_return_table()
-            return
-        
+        search_text = self.screen.search_book_return.text().strip().lower()
+        filter_status = self.screen.combo_filter_status.currentText()
+        filter_borrower = self.screen.combo_filter_borrower.currentText()
+        filter_date = self.screen.combo_filter_date.currentText()
+
+        try:
+            rows = loans_model.list_borrowing()
+            filtered_rows = []
+            
+            for row in rows:
+                # Filter by status
+                status_display = self._format_loan_status(row.get("status"))
+                match_status = (filter_status == "Tất cả" or status_display == filter_status)
+                
+                # Filter by borrower
+                match_borrower = (filter_borrower == "Tất cả" or row.get("account_name") == filter_borrower)
+                
+                # Filter by date
+                match_date = (filter_date == "Tất cả" or str(row["borrow_date"]) == filter_date)
+
+                # Filter by search text (title or borrower name)
+                match_search = (not search_text or 
+                                search_text in row['title'].lower() or 
+                                search_text in row.get('account_name', '').lower())
+                
+                if match_search and match_status and match_borrower and match_date:
+                    filtered_rows.append(row)
+            
+            self._display_borrowing_rows(filtered_rows)
+            
+        except Exception as e:
+            QMessageBox.critical(self.main_window, "Lỗi", f"Lỗi tải danh sách: {str(e)}")
+
+    def _display_borrowing_rows(self, rows):
         t = self.screen.table_loans_return
         t.setRowCount(len(rows))
         for r, row in enumerate(rows):
@@ -156,6 +206,43 @@ class LoansController:
             t.setItem(r, 3, QTableWidgetItem(str(row["borrow_date"])))
             t.setItem(r, 4, QTableWidgetItem(str(row["due_date"] or "")))
             t.setItem(r, 5, QTableWidgetItem(self._format_loan_status(row.get("status"))))
+
+    def _populate_filter_combos(self):
+        try:
+            rows = loans_model.list_borrowing()
+            
+            # Lưu lại selection hiện tại nếu có
+            current_borrower = self.screen.combo_filter_borrower.currentText()
+            current_date = self.screen.combo_filter_date.currentText()
+            
+            # Ngắt kết nối tạm thời để tránh loop
+            self.screen.combo_filter_borrower.blockSignals(True)
+            self.screen.combo_filter_date.blockSignals(True)
+            
+            # Người mượn
+            borrowers = sorted(list(set(row.get("account_name", "") for row in rows if row.get("account_name"))))
+            self.screen.combo_filter_borrower.clear()
+            self.screen.combo_filter_borrower.addItem("Tất cả")
+            self.screen.combo_filter_borrower.addItems(borrowers)
+            
+            # Ngày mượn
+            dates = sorted(list(set(str(row["borrow_date"]) for row in rows if row.get("borrow_date"))), reverse=True)
+            self.screen.combo_filter_date.clear()
+            self.screen.combo_filter_date.addItem("Tất cả")
+            self.screen.combo_filter_date.addItems(dates)
+            
+            # Khôi phục selection
+            idx_b = self.screen.combo_filter_borrower.findText(current_borrower)
+            if idx_b >= 0: self.screen.combo_filter_borrower.setCurrentIndex(idx_b)
+            
+            idx_d = self.screen.combo_filter_date.findText(current_date)
+            if idx_d >= 0: self.screen.combo_filter_date.setCurrentIndex(idx_d)
+            
+            self.screen.combo_filter_borrower.blockSignals(False)
+            self.screen.combo_filter_date.blockSignals(False)
+            
+        except Exception as e:
+            print(f"Lỗi populate filters: {e}")
 
     def return_book(self):
         selected_rows = self.screen.table_loans_return.selectionModel().selectedRows()
@@ -204,7 +291,7 @@ class LoansController:
             QMessageBox.warning(self.main_window, "Thông báo", "Vui lòng chọn sách và bấm 'Thêm Sách' vào danh sách mượn!")
             return
             
-        user_name = self.dialog.user_borrow.text().strip()
+        user_name = self.dialog.user_borrow.currentText().strip()
         user_email = self.dialog.email_account.text().strip()
         
         if not user_name or not user_email:
@@ -221,7 +308,11 @@ class LoansController:
                 acc = account_model.find_by_email(user_email)
                 account_id = acc['id']
             except Exception as e:
-                QMessageBox.critical(self.main_window, "Lỗi", f"Không thể tạo tài khoản mới: {e}")
+                error_msg = str(e)
+                if "Duplicate entry" in error_msg and "email" in error_msg:
+                    QMessageBox.warning(self.main_window, "Lỗi", "Email này đã tồn tại trong hệ thống!")
+                else:
+                    QMessageBox.critical(self.main_window, "Lỗi", f"Không thể tạo tài khoản mới: {error_msg}")
                 return
             
         due_date = self.dialog.return_date.date().toString("yyyy-MM-dd")

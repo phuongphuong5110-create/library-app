@@ -3,7 +3,8 @@ from pathlib import Path
 from PyQt5 import uic
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QWidget
 from model.db import get_connection
-from model.user_model import User
+from model.account_model import Account
+import anhthuvien_rc
 
 from controller.authors_controller import AuthorsController
 from controller.books_controller import BooksController
@@ -12,7 +13,6 @@ from controller.publishers_controller import PublishersController
 from controller.stats_controller import StatsController
 from controller.accounts_controller import AccountsController
 from controller.loans_controller import LoansController
-from controller.users_controller import UsersController
 
 _VIEW_DIR = Path(__file__).resolve().parent.parent / "view"
 
@@ -136,8 +136,8 @@ class LoginWindow(QMainWindow):
         con = None
         try:
             con = get_connection()
-            user_model = User(con)
-            user = user_model.check_admin_login(username, password) or user_model.check_reader_login(username, password)
+            acc_model = Account(con)
+            user = acc_model.check_admin_login(username, password) or acc_model.check_reader_login(username, password)
             if user:
                 import main
                 main.current_user = user
@@ -172,10 +172,10 @@ class RegistWindow(QMainWindow):
         self.ui.btn_regist.clicked.connect(self.handle_regist)
 
     def handle_regist(self):
-        name = self.ui.lineEdit_name.text()
-        email = self.ui.lineEdit_email.text()
-        username = self.ui.lineEdit_username_2.text()
-        password = self.ui.lineEdit_password_regist.text()
+        name = self.ui.lineEdit_name.text().strip()
+        email = self.ui.lineEdit_email.text().strip()
+        username = self.ui.lineEdit_username_2.text().strip()
+        password = self.ui.lineEdit_password_regist.text().strip()
 
         if not all([name, email, username, password]):
             QMessageBox.warning(self, "Lỗi", "Vui lòng nhập đầy đủ thông tin.")
@@ -184,19 +184,20 @@ class RegistWindow(QMainWindow):
         con = None
         try:
             con = get_connection()
-            # 1. Lưu vào bảng users (để đăng nhập)
-            user_model = User(con)
-            # Vì bảng users chỉ có username, password, role và role là enum(admin, reader)
-            user_model.create_user(username, password, 'reader')
-
-            # 2. Lưu vào bảng accounts (để hiển thị danh sách người dùng)
             import model.account_model as account_model
-            account_model.create_account(name, email, 'Người dùng')
+            
+            # Kiểm tra trùng email
+            if account_model.find_by_email(email):
+                QMessageBox.warning(self, "Lỗi", "Email đã tồn tại! Vui lòng sử dụng email khác.")
+                return
+
+            import hashlib
+            hashed_password = hashlib.sha256(password.encode('utf-8')).hexdigest()
+            
+            account_model.create_account(name, email, 'reader', username, hashed_password)
 
             QMessageBox.information(self, "Thành công", "Đăng ký tài khoản thành công!")
             self.open_login()
-        except Exception as e:
-            QMessageBox.critical(self, "Lỗi", f"Đã xảy ra lỗi khi đăng ký: {str(e)}")
         finally:
             if con:
                 con.close()
