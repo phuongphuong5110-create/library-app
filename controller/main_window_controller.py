@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QMainWindow, QMessageBox, QWidget
 from model.db import get_connection
 from model.account_model import Account
 import anhthuvien_rc
+import re
 
 from controller.authors_controller import AuthorsController
 from controller.books_controller import BooksController
@@ -175,6 +176,7 @@ class RegistWindow(QMainWindow):
 
         # bắt sự kiện nút đăng ký
         self.ui.btn_regist.clicked.connect(self.handle_regist)
+        self.ui.btn_return_login.clicked.connect(self.open_login)
 
     def handle_regist(self):
         name = self.ui.lineEdit_name.text().strip()
@@ -184,6 +186,30 @@ class RegistWindow(QMainWindow):
 
         if not all([name, email, username, password]):
             QMessageBox.warning(self, "Lỗi", "Vui lòng nhập đầy đủ thông tin.")
+            return
+
+        # Kiểm tra định dạng Họ và tên
+        name_pattern = r"^[a-zA-ZÀ-ỹ\s]{2,50}$"
+        if not re.match(name_pattern, name):
+            QMessageBox.warning(self, "Lỗi", "Họ và tên không hợp lệ!")
+            return
+
+        # Kiểm tra định dạng email (phải là @gmail.com)
+        email_pattern = r'^[a-zA-Z0-9._%+-]+@gmail\.com$'
+        if not re.match(email_pattern, email):
+            QMessageBox.warning(self, "Lỗi", "Email không hợp lệ!")
+            return
+
+        # Kiểm tra định dạng Tên đăng nhập
+        username_pattern = r"^[a-zA-Z0-9_]{3,20}$"
+        if not re.match(username_pattern, username):
+            QMessageBox.warning(self, "Lỗi", "Tên đăng nhập không hợp lệ (3-20 ký tự, alphanumeric)!")
+            return
+
+        # Kiểm tra định dạng Mật khẩu
+        password_pattern = r'^[A-Za-z\d@$!%*?&]{8,}$'
+        if not re.match(password_pattern, password):
+            QMessageBox.warning(self, "Lỗi", f"Mật khẩu không hợp lệ (ít nhất 8 ký tự)!")
             return
 
         con = None

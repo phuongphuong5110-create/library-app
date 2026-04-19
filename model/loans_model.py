@@ -1,4 +1,5 @@
 from model.db import cursor
+from datetime import datetime
 
 _LOAN_SELECT = """
 SELECT loans.id, books.title, books.code, authors.name, accounts.name as account_name,
@@ -71,7 +72,6 @@ def borrow_book(book_id, account_id, due_date, status='borrowed'):
             """,
             (book_id, book_id, account_id, due_date, status),
         )
-        # Chỉ trừ số lượng sách nếu status là 'borrowed' (admin mượn trực tiếp)
         if status == 'borrowed':
             cur.execute(
                 "UPDATE books SET quantity = quantity - 1 WHERE id = %s",
@@ -102,4 +102,25 @@ def return_book(loan_id):
             )
             if status == 'borrowed':
                 cur.execute("UPDATE books SET quantity = quantity + 1 WHERE id = %s", (book_id,))
-        
+
+def overdue_book(loan_id):
+    with cursor() as cur:
+        cur.execute("SELECT due_date, status FROM loans WHERE id = %s", (loan_id,))
+        result = cur.fetchone()
+        if result:
+            to_date = result['due_date']
+            status = result['status']
+            
+            if datetime.now().date() > to_date and status == 'borrowed':
+                cur.execute("UPDATE loans SET status = 'overdue' WHERE id = %s", (loan_id,))
+                return True
+    return False
+
+def check_and_update_overdue():
+    """Cập nhật tất cả các khoản mượn đã quá hạn từ 'borrowed' sang 'overdue'"""
+    with cursor() as cur:
+        cur.execute("""
+            UPDATE loans 
+            SET status = 'overdue' 
+            WHERE status = 'borrowed' AND due_date < CURDATE()
+        """)

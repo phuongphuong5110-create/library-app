@@ -4,6 +4,7 @@ from PyQt5.QtCore import Qt
 
 from controller.combo_utils import fill_combobox_with_ids, set_combo_current_data
 from model import author_model, book_model, category_model, publisher_model, account_model
+import re
 
 
 def _parse_int(text, default=0):
@@ -74,11 +75,36 @@ class AccountsController:
             QMessageBox.warning(self._main, "Cảnh báo", "Vui lòng điền đầy đủ thông tin")
             return
         
+        name_pattern = r"^[a-zA-ZÀ-ỹ\s]{2,50}$"
+        if not re.match(name_pattern, name):
+            QMessageBox.warning(self._main, "Lỗi", "Họ và tên không hợp lệ!")
+            return
+
+        email_pattern = r'^[a-zA-Z0-9._%+-]+@gmail\.com$'
+        if not re.match(email_pattern, email):
+            QMessageBox.warning(self._main, "Lỗi", "Email không hợp lệ!")
+            return
+
+        username_pattern = r"^[a-zA-Z0-9_]{3,20}$"
+        if not re.match(username_pattern, username):
+            QMessageBox.warning(self._main, "Lỗi", "Tên đăng nhập không hợp lệ!")
+            return
+        password_pattern = r'^[A-Za-z\d@$!%*?&]{8,}$'
+        if not re.match(password_pattern, password):
+            QMessageBox.warning(self._main, "Lỗi", "Mật khẩu không hợp lệ!")
+            return
         try:
+            existing = account_model.find_by_email(email)
+            if existing and existing['id'] != self._loaded_account_id:
+                QMessageBox.warning(self._main, "Lỗi", "Email này đã được sử dụng!")
+                return
+
             if self._loaded_account_id:
                 account_model.update_account(self._loaded_account_id, name, email, role)
+                self._main.statusBar().showMessage("Cập nhật tài khoản thành công.")
             else:
                 account_model.create_account(name, email, role)
+                self._main.statusBar().showMessage("Thêm tài quản thành công.")
             
             self._on_cancel()
             self.refresh_table()
@@ -90,7 +116,7 @@ class AccountsController:
             rows = account_model.list_all_accounts()
         except pymysql.Error:
             self._main.statusBar().showMessage(
-                self._main.tr("Could not load accounts (database error).")
+                self._main.tr("Lỗi kết nối cơ sở dữ liệu.")
             )
             return
         
@@ -185,13 +211,4 @@ class AccountsController:
             except pymysql.Error as e:
                 QMessageBox.critical(self._main, "Lỗi", f"Không thể xóa tài khoản: {str(e)}")
 
-    def is_email_exists(email):
-        query = "SELECT 1 FROM users WHERE email = %s LIMIT 1"
-        cursor.execute(query, (email,))
-        return cursor.fetchone()
-    
-    def handle_register(self):
-        if is_email_exists(self.email):
-            QMessageBox.warning(self._main, "Lỗi", "Email đã tồn tại!")
-        return
 

@@ -156,4 +156,20 @@ QComboBox QAbstractItemView::item:hover {
 QComboBox QAbstractItemView::item:selected {
     background-color: #d2e3fc;
 }
+QLabel#status_overdue {
+    color: #d93025;
+    font-weight: bold;
+}
+QLabel#status_borrowed {
+    color: #1a73e8;
+    font-weight: bold;
+}
+QLabel#status_returned {
+    color: #1e8e3e;
+    font-weight: bold;
+}
+QLabel#status_pending {
+    color: #f9ab00;
+    font-weight: bold;
+}
 """

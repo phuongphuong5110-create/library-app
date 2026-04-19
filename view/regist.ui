@@ -288,7 +288,7 @@
     border-radius: 5px;
 }
 QPushButton:hover {
-    background-color: #333333;
+    background-color: #f6f6f6ff;
 }</string>
        </property>
        <property name="text">
@@ -297,6 +297,39 @@ QPushButton:hover {
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QPushButton" name="btn_return_login">
+    <property name="geometry">
+     <rect>
+      <x>810</x>
+      <y>90</y>
+      <width>51</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    background-color: #222222;
+    color: white;
+    border-radius: 8px;
+    border: none;
+}
+QPushButton:hover {
+    background-color: #444444;
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset theme="QIcon::ThemeIcon::EditUndo"/>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>24</width>
+      <height>24</height>
+     </size>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
