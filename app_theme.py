@@ -115,6 +115,10 @@ QPushButton#btn_category_delete:hover, QPushButton#btn_author_delete:hover,
 QPushButton#btn_publisher_delete:hover {
     background-color: #b31412;
 }
+QPushButton#btn_return_book {
+    background-color: #ff0000;
+    color: #ffffff;
+}
 QTabWidget::pane {
     border: 1px solid #dadce0;
     border-radius: 8px;
@@ -132,7 +136,6 @@ QTabBar::tab:selected {
     background-color: #ffffff;
     border-bottom: 2px solid #1a73e8;
 }
-ui->combo_filter_status->setStyleSheet(R"(
 QComboBox QAbstractItemView {
     border: none;
     padding: 0px;

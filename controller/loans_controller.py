@@ -1,4 +1,6 @@
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem, QDialog
+from PyQt5.QtGui import QPalette
+from PyQt5.QtCore import Qt
 from PyQt5 import uic
 from pathlib import Path
 from datetime import datetime, timedelta
@@ -66,18 +68,46 @@ class LoansController:
         except Exception as e:
             print(f"Lỗi kết nối button trong dialog_loans: {e}")
             
-        # Load danh sách vào combobox
-        try:
-            accounts = loans_model.get_accounts()
-            self.dialog.user_borrow.clear()
-            self.dialog.user_borrow.addItem("", None)
-            for acc in accounts:
-                self.dialog.user_borrow.addItem(acc['name'], acc)
-        except Exception as e:
-            print(f"Lỗi load accounts: {e}")
+        # Lấy thông tin user hiện tại
+        user = getattr(self.main_window, '_current_user', {})
+        role = str(user.get('role') or '').lower()
 
-        self.dialog.user_borrow.setEditText("")
-        self.dialog.email_account.setText("")
+        if role == 'reader' or role == 'người dùng':
+            self.dialog.user_borrow.clear()
+            self.dialog.user_borrow.addItem(user.get('name', ''), user)
+            self.dialog.user_borrow.setCurrentIndex(0)
+            self.dialog.user_borrow.setEnabled(False) 
+            
+            p = self.dialog.user_borrow.palette()
+            p.setColor(QPalette.Disabled, QPalette.Text, Qt.black)
+            p.setColor(QPalette.Disabled, QPalette.ButtonText, Qt.black)
+            p.setColor(QPalette.Disabled, QPalette.WindowText, Qt.black)
+            self.dialog.user_borrow.setPalette(p)
+            
+            self.dialog.email_account.setText(user.get('email', ''))
+            self.dialog.email_account.setReadOnly(True) # Email chỉ đọc
+            
+            pe = self.dialog.email_account.palette()
+            pe.setColor(QPalette.Normal, QPalette.Text, Qt.black)
+            pe.setColor(QPalette.Disabled, QPalette.Text, Qt.black)
+            pe.setColor(QPalette.Inactive, QPalette.Text, Qt.black)
+            self.dialog.email_account.setPalette(pe)
+        else:
+            # Nếu là Admin, load danh sách tất cả các tài khoản
+            try:
+                accounts = loans_model.get_accounts()
+                self.dialog.user_borrow.clear()
+                self.dialog.user_borrow.addItem("", None)
+                for acc in accounts:
+                    self.dialog.user_borrow.addItem(acc['name'], acc)
+            except Exception as e:
+                print(f"Lỗi load accounts: {e}")
+
+            self.dialog.user_borrow.setEnabled(True)
+            self.dialog.user_borrow.setEditText("")
+            self.dialog.user_borrow.setCurrentIndex(0)
+            self.dialog.email_account.setText("")
+            self.dialog.email_account.setReadOnly(False)
         self.dialog.list_book_borrow.clear()
         self.dialog.search_book_borrow.setText("")
         self.dialog.note_loans.setText("")
