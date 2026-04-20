@@ -64,7 +64,7 @@ class LoansController:
         self.refresh_return_table()
         self._populate_filter_combos()
 
-    def open_add_loan_dialog(self):
+    def open_add_loan_dialog(self, preselect_book_id=None):
         self.dialog = QDialog(self.main_window)
         _VIEW_DIR = Path(__file__).resolve().parent.parent / "view"
         uic.loadUi(str(_VIEW_DIR / "dialog_loans.ui"), self.dialog)
@@ -125,7 +125,30 @@ class LoansController:
         self.dialog.return_date.setDate(datetime.now())
         
         self.refresh_borrow_table_dialog()
+        if preselect_book_id is not None:
+            self._preselect_book_in_dialog(preselect_book_id)
         self.dialog.exec_()
+
+    def open_add_loan_dialog_with_book(self, book_id: int):
+        self.open_add_loan_dialog(preselect_book_id=book_id)
+
+    def _preselect_book_in_dialog(self, book_id: int):
+        try:
+            t = self.dialog.table_loans_return
+        except Exception:
+            return
+        for r in range(t.rowCount()):
+            item = t.item(r, 0)
+            if not item:
+                continue
+            try:
+                if int(item.text()) != int(book_id):
+                    continue
+            except ValueError:
+                continue
+            t.selectRow(r)
+            self.add_book_to_list()
+            break
 
     def _on_borrower_changed(self, index):
         data = self.dialog.user_borrow.itemData(index)

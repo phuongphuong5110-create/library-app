@@ -14,11 +14,11 @@ from controller.publishers_controller import PublishersController
 from controller.stats_controller import StatsController
 from controller.accounts_controller import AccountsController
 from controller.loans_controller import LoansController
+from controller.home_reader_controller import HomeReaderController
 
 _VIEW_DIR = Path(__file__).resolve().parent.parent / "view"
 
-_SCREEN_FILES = (
-    "screen_stats.ui",
+_SCREEN_FILES_COMMON = (
     "screen_books.ui",
     "screen_categories.ui",
     "screen_authors.ui",
@@ -35,6 +35,7 @@ class MainWindowController(QMainWindow):
         self._current_user = main.current_user
 
         self._stats_ctrl = None
+        self._home_reader_ctrl = None
         self._books_ctrl = None
         self._categories_ctrl = None
         self._authors_ctrl = None
@@ -44,53 +45,90 @@ class MainWindowController(QMainWindow):
 
         self._load_screens()
 
-        self.btn_nav_stats.clicked.connect(lambda: self._go(0))
+        self.btn_nav_home.clicked.connect(lambda: self._go(0))
         self.btn_nav_books.clicked.connect(lambda: self._go(1))
         self.btn_nav_categories.clicked.connect(lambda: self._go(2))
         self.btn_nav_authors.clicked.connect(lambda: self._go(3))
         self.btn_nav_publishers.clicked.connect(lambda: self._go(4))
         self.btn_nav_accounts.clicked.connect(lambda: self._go(5))
         self.btn_nav_loans.clicked.connect(lambda: self._go(6))
+        self.btn_nav_stats.clicked.connect(lambda: self._go(7))
         self.btn_logout.clicked.connect(self.handle_logout)
+        
+        if hasattr(self, 'btn_toggle_profile'):
+            self.btn_logout.hide()
+            self.btn_toggle_profile.clicked.connect(self.toggle_logout)
 
         self.setup_permissions()
 
+    def toggle_logout(self):
+        if hasattr(self, 'btn_logout'):
+            is_visible = not self.btn_logout.isVisible()
+            self.btn_logout.setVisible(is_visible)
+            
+            if hasattr(self, 'label_dropdown_arrow'):
+                if is_visible:
+                    self.label_dropdown_arrow.setText("▲")
+                else:
+                    self.label_dropdown_arrow.setText("▼")
+
     def setup_permissions(self):
+        if self._current_user:
+            name = self._current_user.get('name') or self._current_user.get('username') or "Người dùng"
+            if hasattr(self, 'btn_toggle_profile'):
+                self.btn_toggle_profile.setText(name)
+            if hasattr(self, 'label_avatar'):
+                first_letter = name[0].upper() if name else "U"
+                self.label_avatar.setText(first_letter)
+                
         role = self._current_user.get('role') if self._current_user else None
+        role = str(role or "").lower()
         
         if role == 'reader':
-            # Reader chỉ thấy Thống kê và Mượn/trả
+            # Reader chỉ thấy Trang chủ và Mượn/trả
             self.btn_nav_books.hide()
             self.btn_nav_categories.hide()
             self.btn_nav_authors.hide()
             self.btn_nav_publishers.hide()
             self.btn_nav_accounts.hide()
-            # Chuyển về màn hình thống kê làm mặc định
-            self._go(0)
-        elif role == 'admin':
-            # Admin thấy tất cả
-            pass
+            self.btn_nav_stats.hide()
+        
+        # Luôn mặc định mở trang chủ (index 0)
+        self._go(0)
 
     def _load_screens(self):
         stack = self.stacked_screens
-        for name in _SCREEN_FILES:
+        
+        # Thứ tự các màn hình trong stack:
+        # 0: Trang chủ (Home Reader)
+        # 1-6: Các màn hình quản lý (Books, Categories, Authors, Publishers, Accounts, Loans)
+        # 7: Thống kê (Stats)
+        screen_files = ("screen_home_reader.ui",) + _SCREEN_FILES_COMMON + ("screen_stats.ui",)
+        
+        for name in screen_files:
             w = QWidget()
             uic.loadUi(str(_VIEW_DIR / name), w)
             stack.addWidget(w)
 
-        self._stats_ctrl = StatsController(self, stack.widget(0))
+        # Khởi tạo các controller với widget tương ứng trong stack
+        self._home_reader_ctrl = HomeReaderController(self, stack.widget(0), None) # Sẽ gán loans_ctrl sau
         self._books_ctrl = BooksController(self, stack.widget(1))
         self._categories_ctrl = CategoriesController(self, stack.widget(2))
         self._authors_ctrl = AuthorsController(self, stack.widget(3))
         self._publishers_ctrl = PublishersController(self, stack.widget(4))
         self._accounts_ctrl = AccountsController(self, stack.widget(5), self._current_user)
         self._loans_ctrl = LoansController(self, stack.widget(6))
+        self._stats_ctrl = StatsController(self, stack.widget(7))
+        
+        # Cập nhật loans_ctrl cho home_reader
+        self._home_reader_ctrl._loans_ctrl = self._loans_ctrl
 
     def _go(self, index):
         # Hiển thị screen tương ứng
         self.stacked_screens.setCurrentIndex(index)
-        if index == 0 and self._stats_ctrl:
-            self._stats_ctrl.refresh_all()
+        
+        if index == 0 and self._home_reader_ctrl:
+            self._home_reader_ctrl.refresh()
         if index == 1 and self._books_ctrl:
             self._books_ctrl.refresh_comboboxes()
             self._books_ctrl.refresh_book_table()
@@ -104,6 +142,8 @@ class MainWindowController(QMainWindow):
             self._accounts_ctrl.refresh_table()
         if index == 6 and self._loans_ctrl:
             self._loans_ctrl.refresh_return_table()
+        if index == 7 and self._stats_ctrl:
+            self._stats_ctrl.refresh_all()
 
     def handle_logout(self):
         msg = QMessageBox(self)

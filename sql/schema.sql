@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS books (
     quantity INT NOT NULL DEFAULT 0,
     year INT NOT NULL DEFAULT 0,
     description TEXT,
+    cover_path VARCHAR(255) NULL,
     category_id INT NOT NULL,
     author_id INT NOT NULL,
     publisher_id INT NOT NULL,

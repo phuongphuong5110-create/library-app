@@ -212,11 +212,11 @@
      </item>
      <item>
       <widget class="QDateEdit" name="date_from">
-       <property name="calendarPopup">
-        <bool>true</bool>
-       </property>
        <property name="displayFormat">
         <string>dd/MM/yyyy</string>
+       </property>
+       <property name="calendarPopup">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -229,11 +229,11 @@
      </item>
      <item>
       <widget class="QDateEdit" name="date_to">
-       <property name="calendarPopup">
-        <bool>true</bool>
-       </property>
        <property name="displayFormat">
         <string>dd/MM/yyyy</string>
+       </property>
+       <property name="calendarPopup">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -269,6 +269,18 @@
      <property name="showGrid">
       <bool>true</bool>
      </property>
+     <attribute name="horizontalHeaderMinimumSectionSize">
+      <number>30</number>
+     </attribute>
+     <attribute name="horizontalHeaderDefaultSectionSize">
+      <number>159</number>
+     </attribute>
+     <attribute name="verticalHeaderMinimumSectionSize">
+      <number>30</number>
+     </attribute>
+     <attribute name="verticalHeaderDefaultSectionSize">
+      <number>40</number>
+     </attribute>
      <column>
       <property name="text">
        <string>ID</string>

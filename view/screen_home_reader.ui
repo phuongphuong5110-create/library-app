@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ScreenHomeReader</class>
+ <widget class="QWidget" name="ScreenHomeReader">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1020</width>
+    <height>760</height>
+   </rect>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">
+    QWidget#ScreenHomeReader {
+        background-color: #f4f6fb;
+    }
+    QLabel#label_page_title {
+        color: #1a1e29;
+        font-size: 28px;
+        font-weight: bold;
+    }
+    QLineEdit#edit_home_search {
+        background-color: #e5eaf5;
+        border: none;
+        border-radius: 20px;
+        padding: 10px 20px;
+        font-size: 14px;
+        color: #5c6273;
+    }
+    QPushButton#btn_home_search {
+        color: #fff;
+        font-weight: bold;
+        background: #29b87e;
+        border: none;
+        border-radius: 18px;
+        padding: 8px 24px;
+        font-size: 14px;
+        margin-left: 10px;
+    }
+    QPushButton#btn_home_refresh {
+        color: #5c6273;
+        font-weight: bold;
+        background: transparent;
+        border: 1px solid #d1d5db;
+        border-radius: 18px;
+        padding: 8px 16px;
+        font-size: 14px;
+        margin-left: 10px;
+    }
+   </string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_root">
+   <property name="spacing">
+    <number>20</number>
+   </property>
+   <property name="leftMargin">
+    <number>40</number>
+   </property>
+   <property name="topMargin">
+    <number>30</number>
+   </property>
+   <property name="rightMargin">
+    <number>40</number>
+   </property>
+   <property name="bottomMargin">
+    <number>30</number>
+   </property>
+   <item>
+    <widget class="QLabel" name="label_page_title">
+     <property name="text">
+      <string>Sách mới về</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_tools">
+     <item>
+      <widget class="QLineEdit" name="edit_home_search">
+       <property name="placeholderText">
+        <string>Tìm kiếm tựa sách hoặc ID...</string>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>350</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>500</width>
+         <height>40</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_home_search">
+       <property name="text">
+        <string>Tìm kiếm</string>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>40</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_home_refresh">
+       <property name="text">
+        <string>Làm mới</string>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>40</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_tools">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QScrollArea" name="scroll_area_books">
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">
+       QScrollArea { border: none; background-color: transparent; }
+       QWidget#scroll_contents_books { background-color: transparent; }
+      </string>
+     </property>
+     <widget class="QWidget" name="scroll_contents_books">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>940</width>
+        <height>500</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="grid_layout_books">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>10</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>10</number>
+       </property>
+       <property name="horizontalSpacing">
+        <number>20</number>
+       </property>
+       <property name="verticalSpacing">
+        <number>30</number>
+       </property>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
+

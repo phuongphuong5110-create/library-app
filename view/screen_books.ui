@@ -243,6 +243,87 @@
             </property>
            </widget>
           </item>
+          <item row="8" column="0">
+           <widget class="QLabel" name="label_add_cover">
+            <property name="text">
+             <string>Ảnh bìa</string>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="1">
+           <widget class="QWidget" name="widget_add_cover">
+            <layout class="QHBoxLayout" name="horizontalLayout_add_cover">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="label_cover_preview_add">
+               <property name="minimumSize">
+                <size>
+                 <width>120</width>
+                 <height>160</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>120</width>
+                 <height>160</height>
+                </size>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="text">
+                <string>Chưa có ảnh</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_add_cover_actions">
+               <item>
+                <widget class="QPushButton" name="btn_choose_cover_add">
+                 <property name="text">
+                  <string>Chọn ảnh…</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="btn_clear_cover_add">
+                 <property name="text">
+                  <string>Xóa ảnh</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="verticalSpacer_add_cover_actions">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
@@ -385,6 +466,87 @@
               <height>100</height>
              </size>
             </property>
+           </widget>
+          </item>
+          <item row="8" column="0">
+           <widget class="QLabel" name="label_edit_cover">
+            <property name="text">
+             <string>Ảnh bìa</string>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="1">
+           <widget class="QWidget" name="widget_edit_cover">
+            <layout class="QHBoxLayout" name="horizontalLayout_edit_cover">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="label_cover_preview_edit">
+               <property name="minimumSize">
+                <size>
+                 <width>120</width>
+                 <height>160</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>120</width>
+                 <height>160</height>
+                </size>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="text">
+                <string>Chưa có ảnh</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_edit_cover_actions">
+               <item>
+                <widget class="QPushButton" name="btn_choose_cover_edit">
+                 <property name="text">
+                  <string>Chọn ảnh…</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="btn_clear_cover_edit">
+                 <property name="text">
+                  <string>Xóa ảnh</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="verticalSpacer_edit_cover_actions">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+            </layout>
            </widget>
           </item>
          </layout>

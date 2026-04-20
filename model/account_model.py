@@ -131,7 +131,19 @@ class Account:
     def check_reader_login(self, username, password):
         hashed_password = self._hash_password(password)
         cursor = self.conn.cursor()
-        # Kiểm tra 'reader', 'Reader' hoặc 'Người dùng' (theo schema.sql)
-        query = "SELECT * FROM accounts WHERE username = %s AND password = %s AND (role = 'reader' OR role = 'Reader' OR role = 'Người dùng')"
+        # Kiểm tra các biến thể role đang dùng trong DB và chuẩn hoá về 'reader'
+        query = """
+            SELECT *
+            FROM accounts
+            WHERE username = %s AND password = %s
+              AND (
+                role = 'reader' OR role = 'Reader'
+                OR role = 'Người dùng' OR role = 'người dùng'
+                OR role = 'Người đọc' OR role = 'người đọc'
+              )
+        """
         cursor.execute(query, (username, hashed_password))
-        return cursor.fetchone()
+        user = cursor.fetchone()
+        if user:
+            user["role"] = "reader"
+        return user

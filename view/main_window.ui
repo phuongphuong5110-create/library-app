@@ -97,9 +97,9 @@
         </spacer>
        </item>
        <item>
-        <widget class="QPushButton" name="btn_nav_stats">
+        <widget class="QPushButton" name="btn_nav_home">
          <property name="text">
-          <string>Thống kê</string>
+          <string>Trang chủ</string>
          </property>
         </widget>
        </item>
@@ -146,6 +146,13 @@
         </widget>
        </item>
        <item>
+        <widget class="QPushButton" name="btn_nav_stats">
+         <property name="text">
+          <string>Thống kê</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <spacer name="verticalSpacer_nav">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -159,10 +166,128 @@
         </spacer>
        </item>
        <item>
-        <widget class="QPushButton" name="btn_logout">
-         <property name="text">
-          <string>Đăng xuất</string>
+        <widget class="QFrame" name="widget_profile_container">
+         <property name="styleSheet">
+          <string notr="true">
+QFrame#widget_profile_container {
+    background-color: transparent;
+    border-radius: 12px;
+}
+QFrame#widget_profile_container:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+          </string>
          </property>
+         <layout class="QVBoxLayout" name="verticalLayout_profile">
+          <property name="spacing">
+           <number>12</number>
+          </property>
+          <property name="leftMargin">
+           <number>8</number>
+          </property>
+          <property name="topMargin">
+           <number>10</number>
+          </property>
+          <property name="rightMargin">
+           <number>8</number>
+          </property>
+          <property name="bottomMargin">
+           <number>10</number>
+          </property>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_profile">
+            <property name="spacing">
+             <number>12</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="label_avatar">
+              <property name="minimumSize">
+               <size>
+                <width>36</width>
+                <height>36</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>36</width>
+                <height>36</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">
+QLabel {
+    background-color: #29b87e;
+    color: white;
+    border-radius: 18px;
+    font-weight: bold;
+    font-size: 16px;
+}
+               </string>
+              </property>
+              <property name="text">
+               <string>U</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btn_toggle_profile">
+              <property name="styleSheet">
+               <string notr="true">
+QPushButton {
+    color: #e8eaed;
+    border: none;
+    text-align: left;
+    font-weight: bold;
+    font-size: 14px;
+    background: transparent;
+}
+QPushButton:hover {
+    color: white;
+    text-decoration: underline;
+}
+               </string>
+              </property>
+              <property name="text">
+               <string>Người dùng ▼</string>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btn_logout">
+            <property name="text">
+             <string>Đăng xuất</string>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">
+QPushButton {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: 8px;
+    padding: 8px;
+    font-weight: bold;
+    font-size: 13px;
+}
+QPushButton:hover {
+    background-color: rgba(239, 68, 68, 0.2);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+}
+             </string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
       </layout>
