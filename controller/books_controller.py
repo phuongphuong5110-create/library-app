@@ -116,6 +116,7 @@ class BooksController:
         shutil.copy2(str(src), str(dest))
         return str(Path("assets") / "book_covers" / file_name)
 
+#chọn ảnh mới
     def _on_choose_cover_add(self):
         p = self._pick_image_file()
         if not p:
@@ -264,7 +265,7 @@ class BooksController:
             self._loaded_book_id = None
         self.refresh_book_table()
         self._main.statusBar().showMessage(self._main.tr("Sách đã được xoá."))
-
+        
     def _on_save_new(self):
         title = self._screen.edit_book_title.text()
         code = self._screen.edit_book_code.text()
@@ -352,6 +353,7 @@ class BooksController:
         self._edit_cover_cleared = False
         self._set_cover_preview_edit(self._loaded_cover_path)
         self._main.statusBar().showMessage(self._main.tr("Sách đã được tải."))
+        self._screen.tabWidget_books.setCurrentIndex(self.TAB_EDIT)
 
     def _on_update(self):
         if self._loaded_book_id is None:

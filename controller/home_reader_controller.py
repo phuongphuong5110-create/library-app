@@ -31,15 +31,14 @@ class HomeReaderController:
 
         layout = self._screen.grid_layout_books
         
-        # Clear existing cards
+        # Xóa các thẻ cũ
         while layout.count():
             item = layout.takeAt(0)
             widget = item.widget()
             if widget is not None:
                 widget.deleteLater()
                 
-        # Card Layout Setup
-        # Use 4 columns layout
+        # Bố cục 4 cột
         cols = 4
         for idx, row in enumerate(rows):
             card = self.create_book_card(row)
@@ -47,10 +46,11 @@ class HomeReaderController:
             c = idx % cols
             layout.addWidget(card, r, c)
             
-        # Add a stretch to the bottom row to push all items up
-        # This prevents cards from stretching vertically if there are only a few
+        # Thêm một stretch vào hàng dưới cùng để đẩy tất cả các mục lên
+        # Điều này ngăn các thẻ kéo dài theo chiều dọc nếu chỉ có một vài thẻ
         layout.setRowStretch(layout.rowCount(), 1)
-        
+    
+    # Tạo thẻ sách
     def create_book_card(self, data):
         from PyQt5.QtWidgets import QFrame, QVBoxLayout, QLabel, QPushButton, QSizePolicy, QWidget
         from PyQt5.QtCore import Qt
@@ -58,23 +58,14 @@ class HomeReaderController:
         from pathlib import Path
         
         card = QFrame()
+        card.setObjectName("card")
         card.setFixedSize(210, 360)
-        card.setStyleSheet("""
-            QFrame {
-                background-color: white;
-                border-radius: 12px;
-                border: 1px solid #e5eaf5;
-            }
-            QFrame:hover {
-                border: 1px solid #29b87e;
-            }
-        """)
         
         layout = QVBoxLayout(card)
         layout.setContentsMargins(15, 15, 15, 15)
         layout.setSpacing(10)
         
-        # Cover Image container (for styling)
+        # Ảnh bìa
         img_container = QWidget()
         img_container.setFixedSize(180, 220)
         img_layout = QVBoxLayout(img_container)
@@ -110,46 +101,23 @@ class HomeReaderController:
         title_label = QLabel(title_text)
         title_label.setWordWrap(True)
         title_label.setStyleSheet("border: none; font-weight: bold; font-size: 14px; color: #1a1e29; margin-top: 5px;")
-        title_label.setFixedHeight(45) # Ép chiều cao cố định để thẻ luôn cân đối bằng nhau
+        title_label.setFixedHeight(45) # Ép chiều cao cố định
         title_label.setAlignment(Qt.AlignTop | Qt.AlignLeft)
         
-        # Author
+        # Tác giả
         author_name = data.get("author_name") or "Không rõ"
         author_label = QLabel(author_name.upper())
         author_label.setStyleSheet("border: none; color: #8f95a3; font-size: 11px; font-weight: bold;")
         
-        # Button
+        # Nút mượn sách
         btn = QPushButton("MƯỢN SÁCH")
         btn.setCursor(Qt.PointingHandCursor)
         if data.get("quantity", 0) > 0:
-            btn.setStyleSheet("""
-                QPushButton {
-                    background-color: #29b87e;
-                    color: white;
-                    border-radius: 8px;
-                    padding: 8px 0;
-                    font-weight: bold;
-                    font-size: 12px;
-                    border: none;
-                }
-                QPushButton:hover {
-                    background-color: #239e6c;
-                }
-            """)
+            btn.setObjectName("btn_borrow")
             btn.clicked.connect(lambda _, bid=data['id']: self._on_borrow_specific(bid))
         else:
             btn.setText("HẾT SÁCH")
-            btn.setStyleSheet("""
-                QPushButton {
-                    background-color: #f4f6fb;
-                    color: #8f95a3;
-                    border-radius: 8px;
-                    padding: 8px 0;
-                    font-weight: bold;
-                    font-size: 12px;
-                    border: none;
-                }
-            """)
+            btn.setObjectName("btn_disabled")
             btn.setEnabled(False)
             
         layout.addWidget(img_container)

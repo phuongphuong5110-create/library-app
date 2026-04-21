@@ -172,4 +172,33 @@ QLabel#status_pending {
     color: #f9ab00;
     font-weight: bold;
 }
+QPushButton#btn_disabled {
+    background-color: #f4f6fb;
+    color: #8f95a3;
+    border-radius: 8px;
+    padding: 8px 0;
+    font-weight: bold;
+    font-size: 12px;
+    border: none;
+}
+QPushButton#btn_borrow {
+    background-color: #29b87e;
+    color: white;
+    border-radius: 8px;
+    padding: 8px 0;
+    font-weight: bold;
+    font-size: 12px;
+    border: none;
+}
+QPushButton#btn_borrow:hover {
+    background-color: #239e6c;
+}
+QFrame#card {
+    background-color: white;
+    border-radius: 12px;
+    border: 1px solid #e5eaf5;
+}
+QFrame#card:hover {
+    border: 1px solid #29b87e;
+}
 """

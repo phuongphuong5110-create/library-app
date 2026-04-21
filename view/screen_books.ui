@@ -50,6 +50,27 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_list">
        <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_search">
+         <item>
+          <widget class="QLabel" name="label_search_title">
+           <property name="text">
+            <string>Tìm theo tên sách</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="edit_search_title"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_search_book">
+           <property name="text">
+            <string>Tìm</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
         <layout class="QHBoxLayout" name="horizontalLayout_list_tools">
          <item>
           <widget class="QPushButton" name="btn_books_refresh">
@@ -354,27 +375,7 @@
        <string>Sửa / Xóa</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_edit">
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_search">
-         <item>
-          <widget class="QLabel" name="label_search_title">
-           <property name="text">
-            <string>Tìm theo tên sách</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="edit_search_title"/>
-         </item>
-         <item>
-          <widget class="QPushButton" name="btn_search_book">
-           <property name="text">
-            <string>Tìm</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
+
        <item>
         <widget class="QGroupBox" name="group_edit_book">
          <property name="title">
