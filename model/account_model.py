@@ -138,7 +138,6 @@ class Account:
             WHERE username = %s AND password = %s
               AND (
                 role = 'reader' OR role = 'Reader'
-                OR role = 'Người dùng' OR role = 'người dùng'
                 OR role = 'Người đọc' OR role = 'người đọc'
               )
         """

@@ -81,7 +81,7 @@ QHeaderView::section {
     font-weight: bold;
 }
 QPushButton {
-    background-color: #1a73e8;
+    background-color: #29b87e;
     color: #ffffff;
     border: none;
     border-radius: 6px;
@@ -93,7 +93,7 @@ QPushButton:hover {
 }
 QPushButton#btn_secondary {
     background-color: #ffffff;
-    color: #1a73e8;
+    color: #29b87e;
     border: 1px solid #dadce0;
 }
 QPushButton#btn_secondary:hover {
@@ -134,7 +134,7 @@ QTabBar::tab {
 }
 QTabBar::tab:selected {
     background-color: #ffffff;
-    border-bottom: 2px solid #1a73e8;
+    border-bottom: 2px solid #29b87e;
 }
 QComboBox QAbstractItemView {
     border: none;

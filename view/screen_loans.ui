@@ -101,7 +101,7 @@
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: #1a73e8; color: white; border-radius: 4px; font-weight: bold;</string>
+        <string notr="true">background-color: #29b87e; color: white; border-radius: 4px; font-weight: bold;</string>
        </property>
        <property name="text">
         <string>Tìm kiếm</string>
@@ -117,7 +117,7 @@
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: #1a73e8; color: white; border-radius: 4px; font-weight: bold;</string>
+        <string notr="true">background-color: #29b87e; color: white; border-radius: 4px; font-weight: bold;</string>
        </property>
        <property name="text">
         <string>＋ Thêm mới</string>
@@ -340,7 +340,7 @@
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: #1a73e8; color: white; border-radius: 4px; font-weight: bold;</string>
+        <string notr="true">background-color: #29b87e; color: white; border-radius: 4px; font-weight: bold;</string>
        </property>
        <property name="text">
         <string>Duyệt mượn</string>
