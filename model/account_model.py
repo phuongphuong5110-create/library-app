@@ -131,7 +131,7 @@ class Account:
     def check_reader_login(self, username, password):
         hashed_password = self._hash_password(password)
         cursor = self.conn.cursor()
-        # Kiểm tra các biến thể role đang dùng trong DB và chuẩn hoá về 'reader'
+        # Kiểm tra các biến thể role đang dùng trong DB và chuẩn hoá về 'Người đọc'
         query = """
             SELECT *
             FROM accounts
@@ -145,5 +145,5 @@ class Account:
         cursor.execute(query, (username, hashed_password))
         user = cursor.fetchone()
         if user:
-            user["role"] = "reader"
+            user["role"] = "Người đọc"
         return user

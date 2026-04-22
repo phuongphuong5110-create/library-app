@@ -84,13 +84,12 @@ class MainWindowController(QMainWindow):
         role = self._current_user.get('role') if self._current_user else None
         role = str(role or "").lower()
         
-        if role == 'reader':
-            # Reader chỉ thấy Trang chủ và Mượn/trả
+        if role in ('reader', 'người đọc'):
+            # Reader chỉ thấy Trang chủ, Mượn/trả và Tài khoản
             self.btn_nav_books.hide()
             self.btn_nav_categories.hide()
             self.btn_nav_authors.hide()
             self.btn_nav_publishers.hide()
-            self.btn_nav_accounts.hide()
             self.btn_nav_stats.hide()
         
         # Luôn mặc định mở trang chủ (index 0)
@@ -181,9 +180,9 @@ class LoginWindow(QMainWindow):
             user = acc_model.check_admin_login(username, password) or acc_model.check_reader_login(username, password)
             if user:
                 if 'role' in user and user['role']:
-                    user['role'] = user['role'].lower()
-                    if user['role'] == 'người dùng':
-                        user['role'] = 'reader'         
+                    role_lower = user['role'].lower()
+                    if role_lower in ('reader', 'người dùng', 'người đọc'):
+                        user['role'] = 'Người đọc'         
                 
                 import main
                 main.current_user = user
@@ -270,7 +269,7 @@ class RegistWindow(QMainWindow):
             import hashlib
             hashed_password = hashlib.sha256(password.encode('utf-8')).hexdigest()
             
-            account_model.create_account(name, email, 'reader', username, hashed_password)
+            account_model.create_account(name, email, 'Người đọc', username, hashed_password)
 
             QMessageBox.information(self, "Thành công", "Đăng ký tài khoản thành công!")
             self.open_login()

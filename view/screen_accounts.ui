@@ -152,102 +152,123 @@
        <property name="title">
         <string>Thông tin người dùng</string>
        </property>
-       <widget class="QLineEdit" name="edit_reader_name">
+       <widget class="QWidget" name="">
         <property name="geometry">
          <rect>
-          <x>520</x>
-          <y>80</y>
-          <width>231</width>
-          <height>31</height>
+          <x>380</x>
+          <y>60</y>
+          <width>371</width>
+          <height>241</height>
          </rect>
         </property>
-       </widget>
-       <widget class="QLabel" name="label_2">
-        <property name="geometry">
-         <rect>
-          <x>410</x>
-          <y>80</y>
-          <width>111</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>18</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Họ tên</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="edit_email_name">
-        <property name="geometry">
-         <rect>
-          <x>520</x>
-          <y>150</y>
-          <width>231</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_3">
-        <property name="geometry">
-         <rect>
-          <x>410</x>
-          <y>150</y>
-          <width>111</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>18</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Email:</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_4">
-        <property name="geometry">
-         <rect>
-          <x>410</x>
-          <y>220</y>
-          <width>71</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>18</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Vai trò:</string>
-        </property>
-       </widget>
-       <widget class="QComboBox" name="comboBox_role">
-        <property name="geometry">
-         <rect>
-          <x>520</x>
-          <y>220</y>
-          <width>151</width>
-          <height>32</height>
-         </rect>
-        </property>
-        <item>
-         <property name="text">
-          <string>Admin</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Người đọc</string>
-         </property>
-        </item>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="0">
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <widget class="QLabel" name="label_2">
+             <property name="font">
+              <font>
+               <pointsize>18</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Họ tên:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_3">
+             <property name="font">
+              <font>
+               <pointsize>18</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Email:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_5">
+             <property name="font">
+              <font>
+               <pointsize>18</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Tên đăng nhập:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_6">
+             <property name="font">
+              <font>
+               <pointsize>18</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Mật khẩu:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_4">
+             <property name="font">
+              <font>
+               <pointsize>18</pointsize>
+              </font>
+             </property>
+             <property name="text">
+              <string>Vai trò:</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="0" column="1">
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <widget class="QLineEdit" name="edit_reader_name"/>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="edit_email_name">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="edit_username">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="edit_password">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="comboBox_role">
+             <item>
+              <property name="text">
+               <string>Admin</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Người đọc</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
        </widget>
       </widget>
      </widget>

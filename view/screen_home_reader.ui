@@ -69,7 +69,7 @@
    <item>
     <widget class="QLabel" name="label_page_title">
      <property name="text">
-      <string>Sách mới về</string>
+      <string>Thư viện sách</string>
      </property>
     </widget>
    </item>
@@ -77,9 +77,6 @@
     <layout class="QHBoxLayout" name="horizontalLayout_tools">
      <item>
       <widget class="QLineEdit" name="edit_home_search">
-       <property name="placeholderText">
-        <string>Tìm kiếm tựa sách hoặc ID...</string>
-       </property>
        <property name="minimumSize">
         <size>
          <width>350</width>
@@ -92,31 +89,34 @@
          <height>40</height>
         </size>
        </property>
+       <property name="placeholderText">
+        <string>Tìm kiếm tựa sách hoặc ID...</string>
+       </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="btn_home_search">
-       <property name="text">
-        <string>Tìm kiếm</string>
-       </property>
        <property name="minimumSize">
         <size>
          <width>0</width>
          <height>40</height>
         </size>
+       </property>
+       <property name="text">
+        <string>Tìm kiếm</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="btn_home_refresh">
-       <property name="text">
-        <string>Làm mới</string>
-       </property>
        <property name="minimumSize">
         <size>
          <width>0</width>
          <height>40</height>
         </size>
+       </property>
+       <property name="text">
+        <string>Làm mới</string>
        </property>
       </widget>
      </item>
@@ -125,23 +125,29 @@
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
       </spacer>
      </item>
     </layout>
    </item>
    <item>
     <widget class="QScrollArea" name="scroll_area_books">
-     <property name="widgetResizable">
-      <bool>true</bool>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
-     </property>
      <property name="styleSheet">
       <string notr="true">
        QScrollArea { border: none; background-color: transparent; }
        QWidget#scroll_contents_books { background-color: transparent; }
       </string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
      </property>
      <widget class="QWidget" name="scroll_contents_books">
       <property name="geometry">
@@ -149,7 +155,7 @@
         <x>0</x>
         <y>0</y>
         <width>940</width>
-        <height>500</height>
+        <height>575</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="grid_layout_books">
@@ -180,4 +186,3 @@
  <resources/>
  <connections/>
 </ui>
-

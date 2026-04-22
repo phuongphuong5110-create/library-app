@@ -82,7 +82,7 @@ class LoansController:
         user = getattr(self.main_window, '_current_user', {})
         role = str(user.get('role') or '').lower()
 
-        if role == 'reader' or role == 'người dùng':
+        if role in ('reader', 'người đọc', 'người dùng'):
             self.dialog.user_borrow.clear()
             self.dialog.user_borrow.addItem(user.get('name', ''), user)
             self.dialog.user_borrow.setCurrentIndex(0)
@@ -351,7 +351,13 @@ class LoansController:
         row_idx = selected_rows[0].row()
         loan_id = int(self.screen.table_loans_return.item(row_idx, 0).text())
         book_title = self.screen.table_loans_return.item(row_idx, 1).text()
-        status_text = self.screen.table_loans_return.item(row_idx, 5).text()
+        # Cột 5 dùng setCellWidget (QLabel) cho các trạng thái chính → item() trả None
+        widget = self.screen.table_loans_return.cellWidget(row_idx, 5)
+        if widget is not None:
+            status_text = widget.text()
+        else:
+            cell_item = self.screen.table_loans_return.item(row_idx, 5)
+            status_text = cell_item.text() if cell_item else ""
 
         if status_text != 'Chờ duyệt':
             QMessageBox.warning(self.main_window, "Thông báo", "Chỉ có thể duyệt các đơn ở trạng thái 'Chờ duyệt'!")
@@ -412,8 +418,9 @@ class LoansController:
         due_date = self.dialog.return_date.date().toString("yyyy-MM-dd")
         
         # Xác định status dựa trên role
-        current_role = self.main_window._current_user.get('role') if hasattr(self.main_window, '_current_user') else 'reader'
-        loan_status = 'borrowed' if current_role == 'admin' else 'pending'
+        current_role = self.main_window._current_user.get('role') if hasattr(self.main_window, '_current_user') else 'Người đọc'
+        current_role_lower = str(current_role or '').lower()
+        loan_status = 'borrowed' if current_role_lower == 'admin' else 'pending'
 
         success_count = 0
         try:

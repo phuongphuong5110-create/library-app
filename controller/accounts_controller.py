@@ -38,6 +38,12 @@ class AccountsController:
         )
         self._screen.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
         
+        # Ẩn nút Thêm, Xóa nếu không phải admin
+        if self._current_user and self._current_user.get('role') != 'admin':
+            self._screen.btn_reader_add.setVisible(False)
+            self._screen.btn_reader_delete.setVisible(False)
+            self._screen.comboBox_role.setEnabled(False)
+        
         self._loaded_account_id = None
         self._screen.tabWidget.setCurrentIndex(0)
         self.refresh_table()
@@ -69,6 +75,9 @@ class AccountsController:
     def _on_save(self):
         name = self._screen.edit_reader_name.text().strip()
         email = self._screen.edit_email_name.text().strip()
+        username = self._screen.edit_username.text().strip()
+        password = self._screen.edit_password.text().strip()
+        
         role = self._screen.comboBox_role.currentText()
         
         if not name or not email:
@@ -113,7 +122,11 @@ class AccountsController:
 
     def refresh_table(self):
         try:
-            rows = account_model.list_all_accounts()
+            all_rows = account_model.list_all_accounts()
+            if self._current_user and self._current_user.get('role') != 'admin':
+                rows = [r for r in all_rows if r['id'] == self._current_user.get('id')]
+            else:
+                rows = all_rows
         except pymysql.Error:
             self._main.statusBar().showMessage(
                 self._main.tr("Lỗi kết nối cơ sở dữ liệu.")
